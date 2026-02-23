@@ -186,17 +186,14 @@ def load_segment_unified():
 @st.cache_data
 def load_loyalty_data():
     try:
-        base_path = "data"  # folder tempat CSV
-
         return {
-            "br_loy_cat": pd.read_csv(os.path.join(base_path, "brand_loyalty_category.csv")),
-            "br_loy_sub": pd.read_csv(os.path.join(base_path, "brand_loyalty_subcategory.csv")),
-            "br_swi_cat": pd.read_csv(os.path.join(base_path, "BRAND_SWITCH_CATEGORY.csv")),
-            "br_swi_sub": pd.read_csv(os.path.join(base_path, "BRAND_SWITCH_SUBCATEGORY.csv")),
-            "cat_loy": pd.read_csv(os.path.join(base_path, "CATEGORY_LOYALTY.csv")),
-            "sub_loy": pd.read_csv(os.path.join(base_path, "SUBCATEGORY_LOYALTY.csv"))
+            "br_loy_cat": pd.read_csv("brand_loyalty_category.csv"),
+            "br_loy_sub": pd.read_csv("brand_loyalty_subcategory.csv"),
+            "br_swi_cat": pd.read_csv("BRAND_SWITCH_CATEGORY.csv"),
+            "br_swi_sub": pd.read_csv("BRAND_SWITCH_SUBCATEGORY.csv"),
+            "cat_loy": pd.read_csv("CATEGORY_LOYALTY.csv"),
+            "sub_loy": pd.read_csv("SUBCATEGORY_LOYALTY.csv")
         }
-
     except Exception as e:
         st.error(f"Gagal load data switching: {e}")
         return None
