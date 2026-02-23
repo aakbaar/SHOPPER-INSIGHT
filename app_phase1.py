@@ -11,7 +11,7 @@ body {
 /* Jika lebar layar <= 1366px (laptop 13-14 inch) */
 @media screen and (max-width: 1366px) {
     html {
-        zoom: 60%;
+        zoom: 100%;
     }
 }
 /* Sticky first column for dataframe */
