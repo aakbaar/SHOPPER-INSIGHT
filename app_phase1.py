@@ -1227,7 +1227,21 @@ def main():
                 df_bc = aff["brand_cat"].copy()
                 df_f = filter_affinity_base(df_bc, sel_sec_aff, sel_plano)
 
-                valid_brand = set(pd.concat([df_f["brand_a"], df_f["brand_b"]]).astype(str).unique())
+                # 🔧 NORMALISASI KOLOM
+                df_f.columns = df_f.columns.str.strip().str.lower()
+
+                # 🔎 VALIDASI KOLOM WAJIB
+                required_cols = {"brand_a", "brand_b"}
+                if not required_cols.issubset(df_f.columns):
+                    st.error(f"Kolom tidak ditemukan! Kolom tersedia: {df_f.columns.tolist()}")
+                    st.stop()
+
+                # ✅ AMAN DIPAKAI
+                valid_brand = set(
+                    pd.concat([df_f["brand_a"], df_f["brand_b"]])
+                    .astype(str)
+                    .unique()
+                )
 
                 df_f = df_f[
                     df_f["brand_a"].astype(str).isin(valid_brand) &
@@ -1235,14 +1249,14 @@ def main():
                 ].reset_index(drop=True)
 
                 st.subheader(f"AFFINITY BRAND BY CATEGORY SECTION : {sel_sec_aff}")
-                # show_qty_impact=False untuk menghapus tabel QTY Impact yang anomali
+
                 render_affinity_tab(
-                    df_f, 
-                    "brand_a", 
-                    "brand_b", 
-                    ["brand_a", "brand_b", "category_a", "category_b"], 
+                    df_f,
+                    "brand_a",
+                    "brand_b",
+                    ["brand_a", "brand_b", "category_a", "category_b"],
                     "bc_aff",
-                    show_qty_impact=False 
+                    show_qty_impact=False
                 )
 
             # ======================================================
@@ -1252,7 +1266,20 @@ def main():
                 df_bs = aff["brand_sub"].copy()
                 df_f = filter_affinity_base(df_bs, sel_sec_aff, sel_plano)
 
-                valid_brand = set(pd.concat([df_f["brand_a"], df_f["brand_b"]]).astype(str).unique())
+                # 🔧 NORMALISASI KOLOM
+                df_f.columns = df_f.columns.str.strip().str.lower()
+
+                # 🔎 VALIDASI KOLOM
+                required_cols = {"brand_a", "brand_b"}
+                if not required_cols.issubset(df_f.columns):
+                    st.error(f"Kolom tidak ditemukan! Kolom tersedia: {df_f.columns.tolist()}")
+                    st.stop()
+
+                valid_brand = set(
+                    pd.concat([df_f["brand_a"], df_f["brand_b"]])
+                    .astype(str)
+                    .unique()
+                )
 
                 df_f = df_f[
                     df_f["brand_a"].astype(str).isin(valid_brand) &
@@ -1260,11 +1287,12 @@ def main():
                 ].reset_index(drop=True)
 
                 st.subheader(f"AFFINITY BRAND BY SUBCATEGORY SECTION : {sel_sec_aff}")
+
                 render_affinity_tab(
-                    df_f, 
-                    "brand_a", 
-                    "brand_b", 
-                    ["brand_a", "brand_b", "subcategory_a", "subcategory_b"], 
+                    df_f,
+                    "brand_a",
+                    "brand_b",
+                    ["brand_a", "brand_b", "subcategory_a", "subcategory_b"],
                     "bs_aff",
                     show_qty_impact=False
                 )
