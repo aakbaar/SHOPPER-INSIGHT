@@ -1,4 +1,21 @@
 import streamlit as st
+
+st.markdown("""
+<style>
+/* Default tetap normal */
+html {
+    zoom: 100%;
+}
+
+/* Jika lebar layar <= 1366px (laptop 13-14 inch) */
+@media screen and (max-width: 1366px) {
+    html {
+        zoom: 75%;
+    }
+}
+</style>
+""", unsafe_allow_html=True)
+
 import pandas as pd
 import numpy as np
 import plotly.express as px
@@ -704,6 +721,14 @@ def render_switching_cards(total_sw, total_no, top_dest_name, top_dest_pct):
     st.markdown("<br>", unsafe_allow_html=True)
 
 def main():
+    st.markdown("""
+    <style>
+    html { zoom: 100%; }
+    @media screen and (max-width: 1366px) {
+        html { zoom: 75%; }
+    }
+    </style>
+    """, unsafe_allow_html=True)
     global df_p 
     
     # --- HITUNG DARI DATA MENTAH ---
