@@ -13,7 +13,6 @@ html {
         zoom: 75%;
     }
 }
-<style>
 /* Sticky first column for dataframe */
 div[data-testid="stDataFrame"] table {
     border-collapse: separate !important;
@@ -40,7 +39,6 @@ div[data-testid="stDataFrame"] td:first-child {
     z-index: 3;
     border-right: 2px solid #ddd;
 }
-
 
 </style>
 """, unsafe_allow_html=True)
