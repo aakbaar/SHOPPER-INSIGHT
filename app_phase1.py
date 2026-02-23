@@ -2,9 +2,10 @@ import streamlit as st
 
 st.markdown("""
 <style>
-/* Default tetap normal */
-html {
-    zoom: 100%;
+body {
+    transform: scale(0.85);
+    transform-origin: top left;
+    width: 117%;
 }
 
 /* Jika lebar layar <= 1366px (laptop 13-14 inch) */
