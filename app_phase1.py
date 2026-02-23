@@ -349,25 +349,51 @@ def display_styled_table(df):
         st.warning("DATA TIDAK TERSEDIA")
         return
 
+    # Bersihkan kolom yang tidak perlu agar tampilan rapi
     cols_to_drop = [c for c in df.columns if any(x in c for x in ["PROMO_PCT", "BUYER_COUNT"])]
     df = df.drop(columns=cols_to_drop, errors='ignore')
+    
+    # Identifikasi semua kolom Growth
+    growth_cols = [c for c in df.columns if "GROWTH" in c]
 
-    # Format manual tanpa pandas styler
+    # --- FIX DATA TYPE & NULLS ---
+    for col in growth_cols:
+        # Paksa konversi ke numeric, yang error (string kosong/teks) jadi NaN
+        df[col] = pd.to_numeric(df[col], errors='coerce')
+
+    # --- LOGIKA PEWARNAAN MANUAL ---
+    def apply_growth_color(val):
+        if pd.isna(val) or val == 0:
+            return 'background-color: white; color: black;'
+        if val > 0:
+            return 'background-color: #d4edda; color: #155724;'
+        if val < 0:
+            return 'background-color: #f8d7da; color: #721c24;'
+        return 'background-color: white; color: black;'
+
+    # --- FORMATTING TAMPILAN ---
+    format_dict = {}
     for col in df.columns:
         if "GROWTH" in col or "PENETRATION" in col:
-            df[col] = df[col].map(lambda x: f"{x:.2%}" if pd.notnull(x) else "-")
+            format_dict[col] = "{:.2%}"
         elif any(x in col for x in ["SPT", "SPB"]):
-            df[col] = df[col].map(lambda x: f"Rp {x:,.0f}" if pd.notnull(x) else "-")
+            format_dict[col] = "Rp {:,.0f}"
+        # Pastikan AVG dan PURCHASE_FREQUENCY selalu 2 desimal di belakang koma
         elif "AVG" in col or "PURCHASE_FREQUENCY" in col:
-            df[col] = df[col].map(lambda x: f"{x:,.2f}" if pd.notnull(x) else "-")
+            format_dict[col] = "{:,.2f}"
 
+    # Terapkan styling
+    styled_df = df.style.format(format_dict, na_rep="-")
+    
+    if growth_cols:
+        styled_df = styled_df.map(apply_growth_color, subset=growth_cols)
+
+    # Tampilkan di Streamlit
     st.dataframe(
-        df,
-        use_container_width=True,
+        styled_df,
+        use_container_width=True, 
         hide_index=True
     )
-
-    st.caption("ℹ️ Keterangan Tabel = **SPT** (Spend Per Trip) | **SPB** (Spend Per Buyer)")
     
     # Menambahkan Keterangan Label secara otomatis di bawah semua tabel Performance
     st.caption("ℹ️ Keterangan Tabel = **SPT** (Spend Per Trip) | **SPB** (Spend Per Buyer)")
