@@ -187,8 +187,8 @@ def load_segment_unified():
 def load_loyalty_data():
     try:
         return {
-            "br_loy_cat": pd.read_csv("brand_loyalty_category.csv"),
-            "br_loy_sub": pd.read_csv("brand_loyalty_subcategory.csv"),
+            "br_loy_cat": pd.read_csv("BRAND_LOYALTY_CATEGORY.csv"),
+            "br_loy_sub": pd.read_csv("BRAND_LOYALTY_SUBCATEGORY.csv"),
             "br_swi_cat": pd.read_csv("BRAND_SWITCH_CATEGORY.csv"),
             "br_swi_sub": pd.read_csv("BRAND_SWITCH_SUBCATEGORY.csv"),
             "cat_loy": pd.read_csv("CATEGORY_LOYALTY.csv"),
