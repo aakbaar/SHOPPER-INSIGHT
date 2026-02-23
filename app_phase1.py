@@ -28,6 +28,21 @@ div[data-testid="stDataFrame"] table td:first-child {
     border-right: 1px solid #ddd;
 }
 </style>
+/* Freeze first column */
+div[data-testid="stDataFrame"] table {
+    border-collapse: separate !important;
+}
+
+div[data-testid="stDataFrame"] th:first-child,
+div[data-testid="stDataFrame"] td:first-child {
+    position: sticky;
+    left: 0;
+    background: white;
+    z-index: 3;
+    border-right: 2px solid #ddd;
+}
+
+</style>
 """, unsafe_allow_html=True)
 
 import pandas as pd
