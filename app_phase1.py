@@ -2,16 +2,15 @@ import streamlit as st
 
 st.markdown("""
 <style>
-body {
-    transform: scale(0.85);
-    transform-origin: top left;
-    width: 117%;
+/* Default tetap normal */
+html {
+    zoom: 100%;
 }
 
+/* Jika lebar layar <= 1366px (laptop 13-14 inch) */
 @media screen and (max-width: 1366px) {
-    body {
-        transform: scale(1);
-        width: 100%;
+    html {
+        zoom: 75%;
     }
 }
 /* Sticky first column for dataframe */
