@@ -183,17 +183,25 @@ def load_loyalty_data():
 
 @st.cache_data
 def load_affinity_data():
-    try:
-        # MENGGUNAKAN NAMA FILE BARU (_PHASE1)
-        return {
-            "cat": pd.read_csv("AFFINITY_CAT_PHASE1.csv"),
-            "subcat": pd.read_csv("AFFINITY_SUBCAT_PHASE1.csv"),
-            "brand_cat": pd.read_csv("AFFINITY_BRAND_CAT_PHASE1.csv"),
-            "brand_sub": pd.read_csv("AFFINITY_BRAND_SUBCAT_PHASE1.csv")
-        }
-    except Exception as e:
-        st.error(f"Gagal load affinity data: {e}")
-        return None
+    files = {
+        "cat": "AFFINITY_CAT_PHASE1.csv",
+        "subcat": "AFFINITY_SUBCAT_PHASE1.csv",
+        "brand_cat": "AFFINITY_BRAND_CAT_PHASE1.csv",
+        "brand_sub": "AFFINITY_BRAND_SUBCAT_PHASE1.csv"
+    }
+
+    data = {}
+
+    for key, file in files.items():
+        try:
+            df = pd.read_csv(file)
+            print(f"{file} ✅ OK")
+            data[key] = df
+        except Exception as e:
+            print(f"{file} ❌ ERROR: {e}")
+            data[key] = pd.DataFrame()
+
+    return data
 
 
 # --- 2. DISPLAY HELPERS ---
@@ -601,7 +609,10 @@ def render_static_affinity_matrix():
     try:
         # 1. Ambil data affinity yang sudah di-load di awal
         aff = load_affinity_data()
-        if not aff: return
+
+        if not aff or aff["cat"].empty or aff["subcat"].empty:
+            st.warning("Data Affinity tidak ditemukan atau file rusak.")
+            return
         
         # 2. Gabungkan data Category & Subcategory untuk mendapatkan mapping varian lengkap
         df_map = pd.concat([aff["cat"], aff["subcat"]], ignore_index=True)
