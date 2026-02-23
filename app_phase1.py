@@ -13,6 +13,20 @@ html {
         zoom: 75%;
     }
 }
+<style>
+/* Sticky first column for dataframe */
+div[data-testid="stDataFrame"] table {
+    border-collapse: separate !important;
+}
+
+div[data-testid="stDataFrame"] table th:first-child,
+div[data-testid="stDataFrame"] table td:first-child {
+    position: sticky;
+    left: 0;
+    background: white;
+    z-index: 2;
+    border-right: 1px solid #ddd;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -738,14 +752,6 @@ def render_switching_cards(total_sw, total_no, top_dest_name, top_dest_pct):
     st.markdown("<br>", unsafe_allow_html=True)
 
 def main():
-    st.markdown("""
-    <style>
-    html { zoom: 100%; }
-    @media screen and (max-width: 1366px) {
-        html { zoom: 75%; }
-    }
-    </style>
-    """, unsafe_allow_html=True)
     global df_p 
     
     # --- HITUNG DARI DATA MENTAH ---
@@ -880,25 +886,67 @@ def main():
         # TAB PLU
         # ==========================================
         with t_plu:
-            df_f = apply_filter(load_perf_file("plu", sel_plano))
-            if not df_f.empty:
-                curr_cat = st.session_state.get("m_plu_c", [])
-                curr_plu = st.session_state.get("m_plu_p", [])
-                
-                cat_opts = get_dynamic_options(df_f, "CATEGORY", curr_cat, {"PLU": curr_plu})
-                plu_opts = get_dynamic_options(df_f, "PLU", curr_plu, {"CATEGORY": curr_cat})
+    df_f = apply_filter(load_perf_file("plu", sel_plano))
+    if not df_f.empty:
 
-                f_cols = st.columns([5, 5])
-                with f_cols[0]: m_cat = st.multiselect("CAT:", cat_opts, key="m_plu_c")
-                with f_cols[1]: m_plu = st.multiselect("PLU:", plu_opts, key="m_plu_p")
+        # Ambil current state
+        curr_cat   = st.session_state.get("m_plu_c", [])
+        curr_brand = st.session_state.get("m_plu_b", [])
+        curr_plu   = st.session_state.get("m_plu_p", [])
 
-                if m_cat: df_f = df_f[df_f["CATEGORY"].isin(m_cat)]
-                if m_plu: df_f = df_f[df_f["PLU"].isin(m_plu)]
+        # Dynamic options
+        cat_opts = get_dynamic_options(
+            df_f, 
+            "CATEGORY", 
+            curr_cat, 
+            {"BRAND": curr_brand, "PLU": curr_plu}
+        )
 
-                render_performance_cards(df_f, is_category=False)
-                display_styled_table(reorder_final(df_f, "plu"))
-                render_static_affinity_matrix()
+        brand_opts = get_dynamic_options(
+            df_f,
+            "BRAND",
+            curr_brand,
+            {"CATEGORY": curr_cat, "PLU": curr_plu}
+        )
 
+        plu_opts = get_dynamic_options(
+            df_f,
+            "PLU",
+            curr_plu,
+            {"CATEGORY": curr_cat, "BRAND": curr_brand}
+        )
+
+        # ===== 3 FILTER COLUMNS =====
+        f_cols = st.columns([4, 4, 4])
+
+        with f_cols[0]:
+            m_cat = st.multiselect("CAT:", cat_opts, key="m_plu_c")
+
+        with f_cols[1]:
+            m_brand = st.multiselect("BRAND:", brand_opts, key="m_plu_b")
+
+        with f_cols[2]:
+            m_plu = st.multiselect("PLU:", plu_opts, key="m_plu_p")
+
+        # ===== APPLY FILTER =====
+        if m_cat:
+            df_f = df_f[df_f["CATEGORY"].isin(m_cat)]
+
+        if m_brand:
+            df_f = df_f[df_f["BRAND"].isin(m_brand)]
+
+        if m_plu:
+            df_f = df_f[df_f["PLU"].isin(m_plu)]
+
+        # ===== REORDER KOLOM (CATEGORY → BRAND → PLU) =====
+        base_order = ["CATEGORY", "BRAND", "PLU"]
+        existing_base = [c for c in base_order if c in df_f.columns]
+        other_cols = [c for c in df_f.columns if c not in existing_base]
+        df_f = df_f[existing_base + other_cols]
+
+        render_performance_cards(df_f, is_category=False)
+        display_styled_table(reorder_final(df_f, "plu"))
+        render_static_affinity_matrix()
         # ==========================================
         # TAB SEGMENTASI (BACK TO SUB-TABS DESIGN)
         # ==========================================
