@@ -894,12 +894,37 @@ def main():
                 cat_opts = get_dynamic_options(df_f, "CATEGORY", curr_cat, {"PLU": curr_plu})
                 plu_opts = get_dynamic_options(df_f, "PLU", curr_plu, {"CATEGORY": curr_cat})
 
-                f_cols = st.columns([5, 5])
-                with f_cols[0]: m_cat = st.multiselect("CAT:", cat_opts, key="m_plu_c")
-                with f_cols[1]: m_plu = st.multiselect("PLU:", plu_opts, key="m_plu_p")
+                # Ambil state sekarang
+                curr_cat = st.session_state.get("m_plu_c", [])
+                curr_brand = st.session_state.get("m_plu_b", [])
+                curr_plu = st.session_state.get("m_plu_p", [])
 
-                if m_cat: df_f = df_f[df_f["CATEGORY"].isin(m_cat)]
-                if m_plu: df_f = df_f[df_f["PLU"].isin(m_plu)]
+                # Dynamic options (tidak ubah logic existing, hanya tambah brand)
+                cat_opts = get_dynamic_options(df_f, "CATEGORY", curr_cat, {"PLU": curr_plu})
+                brand_opts = get_dynamic_options(df_f, "BRAND", curr_brand, {"CATEGORY": curr_cat, "PLU": curr_plu})
+                plu_opts = get_dynamic_options(df_f, "PLU", curr_plu, {"CATEGORY": curr_cat})
+
+                # 3 kolom sekarang
+                f_cols = st.columns([4, 4, 4])
+
+                with f_cols[0]:
+                    m_cat = st.multiselect("CAT:", cat_opts, key="m_plu_c")
+
+                with f_cols[1]:
+                    m_brand = st.multiselect("BRAND:", brand_opts, key="m_plu_b")
+
+                with f_cols[2]:
+                    m_plu = st.multiselect("PLU:", plu_opts, key="m_plu_p")
+
+                # Apply filter (hanya tambah brand)
+                if m_cat:
+                    df_f = df_f[df_f["CATEGORY"].isin(m_cat)]
+
+                if m_brand:
+                    df_f = df_f[df_f["BRAND"].isin(m_brand)]
+
+                if m_plu:
+                    df_f = df_f[df_f["PLU"].isin(m_plu)]
 
                 render_performance_cards(df_f, is_category=False)
                 display_styled_table(reorder_final(df_f, "plu"))
