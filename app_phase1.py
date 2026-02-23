@@ -27,8 +27,7 @@ div[data-testid="stDataFrame"] table td:first-child {
     z-index: 2;
     border-right: 1px solid #ddd;
 }
-</style>
-/* Freeze first column */
+/* Freeze first column on all Streamlit dataframes */
 div[data-testid="stDataFrame"] table {
     border-collapse: separate !important;
 }
@@ -41,6 +40,7 @@ div[data-testid="stDataFrame"] td:first-child {
     z-index: 3;
     border-right: 2px solid #ddd;
 }
+
 
 </style>
 """, unsafe_allow_html=True)
