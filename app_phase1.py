@@ -384,10 +384,12 @@ def display_styled_table(df):
 
     # Terapkan styling
     styled_df = df.style.format(format_dict, na_rep="-")
-    
+
     if growth_cols:
         styled_df = styled_df.map(apply_growth_color, subset=growth_cols)
 
+    # 🔥 TAMBAHKAN INI (freeze kolom pertama)
+    styled_df = styled_df.set_sticky(axis="columns")
     # Tampilkan di Streamlit
     st.dataframe(
         styled_df,
