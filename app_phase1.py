@@ -214,7 +214,8 @@ def load_affinity_data():
 
     for key, file in files.items():
         try:
-            df = pd.read_csv(file)
+            # AUTO DETECT delimiter (, atau ;)
+            df = pd.read_csv(file, sep=None, engine="python")
             print(f"{file} ✅ OK")
             data[key] = df
         except Exception as e:
@@ -544,7 +545,7 @@ def render_affinity_tab(df, col_a, col_b, filter_cols, key_prefix, show_qty_impa
     # 8.5 RENDER TOP 10 AFFINITY (BARU DITAMBAHKAN)
     # ========================================================
     st.markdown("<br>", unsafe_allow_html=True)
-    st.write("###TOP 10 AFFINITY PAIRS")
+    st.write("**TOP 10 AFFINITY PAIRS**")
     st.info("Menampilkan 10 kombinasi pasangan dengan skor Affinity tertinggi")
     
     # Hitung rata-rata weighted_score per pasangan, urutkan dari terbesar, ambil 10 teratas
