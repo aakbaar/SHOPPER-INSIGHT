@@ -872,6 +872,7 @@ def render_category_promo_share_chart(df):
 
     import plotly.express as px
 
+    st.markdown ("------")
     st.markdown("### 🎯 PROMO CONTRIBUTION BY CATEGORY")
 
     temp = df.copy()
