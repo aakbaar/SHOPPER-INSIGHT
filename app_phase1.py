@@ -285,24 +285,19 @@ def render_performance_cards(df, is_category=False):
     
     if is_category:
 
-    # ==============================
-    # TRANSACTION PENETRATION (WEIGHTED)
-    # ==============================
-        if "AVG_STRUK_MONTH_AFTER" in df.columns and 'total_struk_global' in globals():
-            total_cat_trans = df["AVG_STRUK_MONTH_AFTER"].sum()
-            total_sec_trans = total_struk_global if total_struk_global > 0 else 0
+        # gunakan nilai penetration dari CSV langsung
+        metrics["pen_val"] = (
+            df["TRANSACTION_PENETRATION_AFTER"].sum()
+            if "TRANSACTION_PENETRATION_AFTER" in df.columns else 0
+        )
 
-            metrics["pen_val"] = total_cat_trans / total_sec_trans if total_sec_trans else 0
-        else:
-            metrics["pen_val"] = 0
-
-        # Growth penetration tetap pakai mean (boleh)
+        # growth tetap mean
         metrics["pen_gr"] = (
-            df["TRANSACTION_PENETRATION_GROWTH"].fillna(0).mean()
+            df["TRANSACTION_PENETRATION_GROWTH"].mean()
             if "TRANSACTION_PENETRATION_GROWTH" in df.columns else 0
         )
 
-        # Total buyer
+        # total buyer tetap sum
         metrics["buyer_total"] = (
             df["BUYER_COUNT_AFTER"].sum()
             if "BUYER_COUNT_AFTER" in df.columns else 0
