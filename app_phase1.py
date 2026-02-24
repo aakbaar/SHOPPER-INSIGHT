@@ -403,7 +403,10 @@ def display_styled_table(df):
     valid_growth_cols = [c for c in growth_cols if c in df.columns]
 
     if valid_growth_cols:
-        styled_df = styled_df.map(apply_growth_color, subset=valid_growth_cols)
+        styled_df = styled_df.applymap(
+            apply_growth_color,
+            subset=valid_growth_cols
+        )
 
     # 🔥 TAMBAHKAN INI (freeze kolom pertama)
     styled_df = styled_df.set_sticky(axis="columns")
