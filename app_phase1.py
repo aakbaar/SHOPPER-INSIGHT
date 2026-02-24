@@ -352,7 +352,7 @@ def display_styled_table(df):
         return
 
     # Bersihkan kolom yang tidak perlu agar tampilan rapi
-    cols_to_drop = [c for c in df.columns if any(x in c for x in ["PROMO_PCT", "BUYER_COUNT"])]
+    cols_to_drop = [c for c in df.columns if "PROMO_PCT" in c]
     df = df.drop(columns=cols_to_drop, errors='ignore')
     
     # Identifikasi semua kolom Growth
@@ -447,9 +447,11 @@ def reorder_final(df, level):
     
     # Tambahkan Penetration HANYA untuk level category
     if level == "category":
-        metric_order += [
-            "PENETRATION_BEFORE", "PENETRATION_AFTER", "PENETRATION_GROWTH"
-        ]
+    metric_order += [
+        "TRANSACTION_PENETRATION_BEFORE",
+        "TRANSACTION_PENETRATION_AFTER",
+        "TRANSACTION_PENETRATION_GROWTH"
+    ]
     
     # 3. Filter kolom yang benar-benar ada di dalam dataset agar tidak error
     existing_ids = [c for c in id_cols if c in cols]
@@ -876,6 +878,7 @@ def main():
                 with card_place:
                     render_performance_cards(df_f, is_category=True)
                 display_styled_table(reorder_final(df_f, "category"))
+                render_category_promo_driven(df_f)
                 render_static_affinity_matrix() # Tambahkan di baris terakhir tab
 
         # ==========================================
