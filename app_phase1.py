@@ -2,18 +2,79 @@ import streamlit as st
 
 st.markdown("""
 <style>
-
-/* Jika lebar layar <= 1366px (laptop 13-14 inch) */
-@media screen and (max-width: 1366px) {
-    html {
-        zoom: 75%;
-    }
-}
-/* Sticky first column for dataframe */
-div[data-testid="stDataFrame"] table {
-    border-collapse: separate !important;
+/* Kecilkan lebar layout utama */
+.block-container {
+    max-width: 3500px;
+    padding-top: 1rem;
+    padding-bottom: 0rem;
 }
 
+/* ========================= */
+/* FONT SCALING */
+/* ========================= */
+
+html, body, [class*="css"]  {
+    font-size: 12px;
+}
+
+h1 { font-size: 26px; }
+h2 { font-size: 20px; }
+h3 { font-size: 16px; }
+
+/* ========================= */
+/* METRIC CARD COMPACT */
+/* ========================= */
+
+div[data-testid="metric-container"] {
+    padding: 10px 10px;
+    border-radius: 8px;
+}
+
+/* ========================= */
+/* DATAFRAME SAFE */
+/* ========================= */
+
+div[data-testid="stDataFrame"] {
+    overflow: auto;
+}
+
+/* sticky header tetap aman */
+div[data-testid="stDataFrame"] thead tr th {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 2;
+}
+
+/* ========================= */
+/* SIDEBAR TETAP NORMAL */
+/* ========================= */
+
+section[data-testid="stSidebar"] {
+    width: 220px !important;
+}
+
+/* ========================= */
+/* TAB COMPACT */
+/* ========================= */
+
+button[role="tab"] {
+    padding: 6px 12px;
+    border-radius: 10px;
+}
+
+/* ========================= */
+/* SPACING RAPAT */
+/* ========================= */
+
+div[data-testid="stVerticalBlock"] {
+    gap: 0.5rem;
+}
+
+/* hilangkan ruang kosong */
+div[data-testid="stVerticalBlock"] > div:empty {
+    display: none;
+}
 div[data-testid="stDataFrame"] table th:first-child,
 div[data-testid="stDataFrame"] table td:first-child {
     position: sticky;
@@ -60,8 +121,7 @@ st.markdown("""
 
     /* Judul Sidebar Custom */
     .sidebar-title-custom {
-        /* SILAKAN UBAH ANGKA DI BAWAH INI UNTUK BESAR/KECIL FONT */
-        font-size: 37px !important; 
+        font-size: 35px !important; 
         
         font-weight: 800;
         color: #1E293B;
@@ -144,17 +204,17 @@ st.markdown("""
     /* 5. TAB STYLING (MODERN SEGMENTED DENGAN SEKAT) */
     .stTabs [data-baseweb="tab-list"] {
         background-color: #F0F2F6 !important; 
-        border-radius: 12px;
+        border-radius: 10px;
         padding: 6px;
         gap: 0px; /* Gap dinolkan agar sekat terlihat menyambung */
         border: 1px solid #DFE1E5;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
         display: flex;
         align-items: center;
     }
 
     .stTabs [data-baseweb="tab"] {
-        height: 35px;
+        height: 22px;
         background-color: transparent !important;
         border-radius: 0px !important; /* Kotak agar sekat konsisten */
         border: none !important;
@@ -188,6 +248,36 @@ st.markdown("""
     /* Menghilangkan garis bawah default Streamlit */
     .stTabs [data-baseweb="tab-highlight"] {
         display: none !important;
+    }
+    /* 1. MENGECILKAN KONTAINER KARTU */
+    [data-testid="stMetric"] {
+        background-color: #ffffff;
+        border: 1px solid #f0f2f6; /* Opsional: tambah border halus */
+        padding: 10px !important;
+        border-radius: 8px;
+    }
+
+    /* 2. MENGECILKAN LABEL (Judul di atas angka, misal: 'Spend Per Buyer') */
+    [data-testid="stMetricLabel"] {
+        font-size: 0.75rem !important;
+        font-weight: 500 !important;
+        color: #64748b !important;
+    }
+
+    /* 3. MENGECILKAN ANGKA UTAMA (Misal: 'Rp 22,663') */
+    [data-testid="stMetricValue"] {
+        font-size: 1.2rem !important; /* Perkecil angka agar tidak makan tempat */
+        font-weight: 700 !important;
+    }
+
+    /* 4. MENGECILKAN ANGKA PERTUMBUHAN/DELTA (Misal: '-0.59%') */
+    [data-testid="stMetricDelta"] {
+        font-size: 0.7rem !important;
+    }
+
+    /* 5. MENGATUR JARAK ANTAR KARTU (Jika pakai st.columns) */
+    div[data-testid="column"] {
+        padding: 0px 5px !important;
     }
     </style>
     """, unsafe_allow_html=True)
