@@ -285,19 +285,16 @@ def render_performance_cards(df, is_category=False):
     
     if is_category:
 
-        # gunakan nilai penetration dari CSV langsung
         metrics["pen_val"] = (
-            df["TRANSACTION_PENETRATION_AFTER"].sum()
+            df["TRANSACTION_PENETRATION_AFTER"].mean()
             if "TRANSACTION_PENETRATION_AFTER" in df.columns else 0
         )
 
-        # growth tetap mean
         metrics["pen_gr"] = (
             df["TRANSACTION_PENETRATION_GROWTH"].mean()
             if "TRANSACTION_PENETRATION_GROWTH" in df.columns else 0
         )
 
-        # total buyer tetap sum
         metrics["buyer_total"] = (
             df["BUYER_COUNT_AFTER"].sum()
             if "BUYER_COUNT_AFTER" in df.columns else 0
