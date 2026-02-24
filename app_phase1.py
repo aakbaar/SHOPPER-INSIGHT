@@ -284,8 +284,9 @@ def render_performance_cards(df, is_category=False):
     }
     
     if is_category:
-        metrics["pen_val"] = df["PENETRATION_AFTER"].mean() if "PENETRATION_AFTER" in df.columns else 0
-        metrics["pen_gr"] = df["PENETRATION_GROWTH"].mean() if "PENETRATION_GROWTH" in df.columns else 0
+        metrics["pen_val"] = df["TRANSACTION_PENETRATION_AFTER"].mean() if "TRANSACTION_PENETRATION_AFTER" in df.columns else 0
+        metrics["pen_gr"] = df["TRANSACTION_PENETRATION_GROWTH"].mean() if "TRANSACTION_PENETRATION_GROWTH" in df.columns else 0
+        metrics["buyer_total"] = df["BUYER_COUNT_AFTER"].sum() if "BUYER_COUNT_AFTER" in df.columns else 0
 
     # Indikator Growth (Bubble)
     def get_delta_html(val):
@@ -316,9 +317,10 @@ def render_performance_cards(df, is_category=False):
         with cols[0]:
             st.markdown(f"""
                 <div style="{card_container_style}">
-                    <p style="color:#666; font-size:14px; margin:0; font-weight:500;">Category Penetration</p>
+                    <p style="color:#666; font-size:14px; margin:0; font-weight:500;">Transaction Penetration</p>
                     <div style="font-size:32px; font-weight:bold; color:#000; line-height:1.1;">{metrics['pen_val']:.2%}</div>
                     {get_delta_html(metrics['pen_gr'])}
+                    <p style="color:#888; font-size:11px; margin:0;">Total Buyers: {metrics['buyer_total']:,}</p>
                 </div>
             """, unsafe_allow_html=True)
 
