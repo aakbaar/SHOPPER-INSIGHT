@@ -447,11 +447,11 @@ def reorder_final(df, level):
     
     # Tambahkan Penetration HANYA untuk level category
     if level == "category":
-    metric_order += [
-        "TRANSACTION_PENETRATION_BEFORE",
-        "TRANSACTION_PENETRATION_AFTER",
-        "TRANSACTION_PENETRATION_GROWTH"
-    ]
+        metric_order += [
+            "TRANSACTION_PENETRATION_BEFORE",
+            "TRANSACTION_PENETRATION_AFTER",
+            "TRANSACTION_PENETRATION_GROWTH"
+        ]
     
     # 3. Filter kolom yang benar-benar ada di dalam dataset agar tidak error
     existing_ids = [c for c in id_cols if c in cols]
