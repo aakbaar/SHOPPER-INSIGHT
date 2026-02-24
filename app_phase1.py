@@ -811,7 +811,7 @@ def main():
             cursor:pointer;
             box-shadow: 0 4px 10px rgba(255,0,0,0.25);
         ">
-            🚀 Buka Shopper Insight Phase 2
+            Shopper Insight Phase 2
         </button>
     </a>
     """, unsafe_allow_html=True)
