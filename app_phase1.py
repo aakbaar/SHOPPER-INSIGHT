@@ -848,12 +848,6 @@ def main():
     # 2. MENU: Beri sedikit keterangan jika perlu
     st.sidebar.write("MENU:")
     menu = st.sidebar.radio("", ["📈 PERFORMANCE", "🔄 SWITCHING", "🛒 AFFINITY"], label_visibility="collapsed")
-
-    try:
-        sections_only = sorted(df_p["SECTION"].unique().tolist())
-    except NameError:
-        st.error("Variabel 'df_p' tidak ditemukan. Pastikan data performance sudah di-load di awal file.")
-        return
     st.sidebar.markdown("---")
 
     st.sidebar.markdown("""
