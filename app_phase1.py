@@ -797,59 +797,6 @@ def render_switching_cards(total_sw, total_no, top_dest_name, top_dest_pct):
     
     st.markdown("<br>", unsafe_allow_html=True)
 
-def render_category_promo_driven(df):
-    """
-    Menampilkan kategori yang pembeliannya didominasi promo vs non promo
-    Aman walaupun kolom belum ada (tidak crash)
-    """
-
-    if df.empty:
-        return
-
-    # VALIDASI KOLOM
-    required_cols = {"PROMO_BUYER_AFTER", "NON_PROMO_BUYER_AFTER", "CATEGORY"}
-    if not required_cols.issubset(df.columns):
-        st.info("Promo driven belum tersedia di data perf.")
-        return
-
-    # Hitung share
-    temp = df.copy()
-
-    temp["TOTAL_BUYER"] = (
-        temp["PROMO_BUYER_AFTER"].fillna(0)
-        + temp["NON_PROMO_BUYER_AFTER"].fillna(0)
-    )
-
-    # Hindari pembagian nol
-    temp = temp[temp["TOTAL_BUYER"] > 0]
-
-    temp["PROMO_SHARE"] = temp["PROMO_BUYER_AFTER"] / temp["TOTAL_BUYER"]
-    temp["NON_PROMO_SHARE"] = temp["NON_PROMO_BUYER_AFTER"] / temp["TOTAL_BUYER"]
-
-    # Urutkan kategori paling promo-driven
-    temp = temp.sort_values("PROMO_SHARE", ascending=False)
-
-    st.markdown("### 🚀 CATEGORY PROMO DRIVEN")
-
-    st.dataframe(
-        temp[
-            [
-                "CATEGORY",
-                "PROMO_BUYER_AFTER",
-                "NON_PROMO_BUYER_AFTER",
-                "PROMO_SHARE",
-                "NON_PROMO_SHARE",
-            ]
-        ]
-        .style.format(
-            {
-                "PROMO_SHARE": "{:.1%}",
-                "NON_PROMO_SHARE": "{:.1%}",
-            }
-        ),
-        use_container_width=True,
-        hide_index=True,
-    )
 def render_category_promo_share_chart(df):
     """
     Promo vs Non Promo (Average BEFORE & AFTER)
