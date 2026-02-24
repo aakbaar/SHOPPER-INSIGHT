@@ -826,14 +826,7 @@ def render_category_promo_driven(df):
 def main():
     global df_p 
     
-    # --- HITUNG DARI DATA MENTAH ---
-    global total_struk_global
-    if 'df_raw' in globals():
-        total_struk_global = df_raw['NO_STRUK'].nunique()
-    else:
-        # Jika df_raw tidak ada di memory, kita tarik dari Buyer Count Global di df_p
-        # Ini adalah proxy paling mendekati jika NO_STRUK tidak tersedia
-        total_struk_global = df_p['BUYER_COUNT_BEFORE'].max()
+
     sections_only = sorted(df_p["SECTION"].unique().tolist())
 
     # Cari index pertama yang huruf depannya 'B' (Default ke 0 jika tidak ada)
@@ -893,7 +886,15 @@ def main():
         with col_title: st.title("📈 PERFORMANCE OVERVIEW")
         with col_plano: sel_plano = st.selectbox("VERSI PLANO", ["V1", "V2"], key="plano_perf")
         # 🔥 Load df_p sesuai plano yang dipilih
+        # 🔥 Load perf dataset sesuai plano aktif
         df_p = load_perf_file("category", sel_plano)
+
+        # 🔥 Hitung universe transaksi global (dipakai affinity)
+        global total_struk_global
+        if 'df_raw' in globals():
+            total_struk_global = df_raw['NO_STRUK'].nunique()
+        else:
+            total_struk_global = df_p['BUYER_COUNT_BEFORE'].max()
         with col_sec: 
             # HAPUS ["ALL"] + dan gunakan index=start_idx
             sel_sec = st.selectbox("SECTION FILTER", sections_only, index=start_idx, key="sec_perf")
