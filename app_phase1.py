@@ -850,6 +850,119 @@ def render_category_promo_driven(df):
         use_container_width=True,
         hide_index=True,
     )
+def render_category_promo_share_chart(df):
+    """
+    Stacked promo vs non promo share (100%) per category
+    BEFORE & AFTER
+    """
+
+    if df.empty:
+        return
+
+    required_cols = {
+        "CATEGORY",
+        "PROMO_SHARE_BEFORE",
+        "NON_PROMO_SHARE_BEFORE",
+        "PROMO_SHARE_AFTER",
+        "NON_PROMO_SHARE_AFTER"
+    }
+
+    if not required_cols.issubset(df.columns):
+        st.info("Promo share belum tersedia di dataset.")
+        return
+
+    import plotly.express as px
+
+    st.markdown("### 🎯 PROMO CONTRIBUTION BY CATEGORY")
+
+    # =========================
+    # BEFORE
+    # =========================
+    df_before = df[[
+        "CATEGORY",
+        "PROMO_SHARE_BEFORE",
+        "NON_PROMO_SHARE_BEFORE"
+    ]].copy()
+
+    df_before = df_before.melt(
+        id_vars="CATEGORY",
+        value_vars=["PROMO_SHARE_BEFORE", "NON_PROMO_SHARE_BEFORE"],
+        var_name="TYPE",
+        value_name="SHARE"
+    )
+
+    df_before["TYPE"] = df_before["TYPE"].map({
+        "PROMO_SHARE_BEFORE": "PROMO",
+        "NON_PROMO_SHARE_BEFORE": "NON PROMO"
+    })
+
+    fig_before = px.bar(
+        df_before,
+        y="CATEGORY",
+        x="SHARE",
+        color="TYPE",
+        orientation="h",
+        barmode="stack",
+        title="Promo vs Non Promo (BEFORE)",
+        text=df_before["SHARE"].apply(lambda x: f"{x:.0%}"),
+        color_discrete_map={
+            "PROMO": "#264653",
+            "NON PROMO": "#E9C46A"
+        }
+    )
+
+    fig_before.update_layout(
+        xaxis_tickformat=".0%",
+        height=400,
+        showlegend=True
+    )
+
+    st.plotly_chart(fig_before, use_container_width=True)
+
+    # =========================
+    # AFTER
+    # =========================
+    df_after = df[[
+        "CATEGORY",
+        "PROMO_SHARE_AFTER",
+        "NON_PROMO_SHARE_AFTER"
+    ]].copy()
+
+    df_after = df_after.melt(
+        id_vars="CATEGORY",
+        value_vars=["PROMO_SHARE_AFTER", "NON_PROMO_SHARE_AFTER"],
+        var_name="TYPE",
+        value_name="SHARE"
+    )
+
+    df_after["TYPE"] = df_after["TYPE"].map({
+        "PROMO_SHARE_AFTER": "PROMO",
+        "NON_PROMO_SHARE_AFTER": "NON PROMO"
+    })
+
+    fig_after = px.bar(
+        df_after,
+        y="CATEGORY",
+        x="SHARE",
+        color="TYPE",
+        orientation="h",
+        barmode="stack",
+        title="Promo vs Non Promo (AFTER)",
+        text=df_after["SHARE"].apply(lambda x: f"{x:.0%}"),
+        color_discrete_map={
+            "PROMO": "#264653",
+            "NON PROMO": "#E9C46A"
+        }
+    )
+
+    fig_after.update_layout(
+        xaxis_tickformat=".0%",
+        height=400,
+        showlegend=True
+    )
+
+    st.plotly_chart(fig_after, use_container_width=True)
+
 def render_category_promo_combined(df):
     """
     1 chart saja:
