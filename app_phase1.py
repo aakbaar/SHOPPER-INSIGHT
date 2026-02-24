@@ -962,11 +962,10 @@ def render_category_promo_share_chart(df):
     )
 
     st.plotly_chart(fig_after, use_container_width=True)
-
-def render_category_promo_combined(df):
+def render_category_promo_average(df):
     """
-    1 chart saja:
-    PROMO vs NON PROMO (gabungan BEFORE + AFTER)
+    BEFORE & AFTER di-average → jadi 1 nilai PROMO vs NON PROMO
+    tampil 1 chart saja
     """
 
     if df.empty:
@@ -974,65 +973,58 @@ def render_category_promo_combined(df):
 
     required_cols = {
         "CATEGORY",
-        "BUYER_PROMO_BEFORE",
-        "BUYER_PROMO_AFTER",
-        "BUYER_NON_PROMO_BEFORE",
-        "BUYER_NON_PROMO_AFTER"
+        "PROMO_SHARE_BEFORE",
+        "PROMO_SHARE_AFTER",
+        "NON_PROMO_SHARE_BEFORE",
+        "NON_PROMO_SHARE_AFTER"
     }
 
     if not required_cols.issubset(df.columns):
-        st.info("Kolom buyer promo belum tersedia.")
+        st.info("Kolom promo share belum tersedia.")
         return
 
     import pandas as pd
     import plotly.express as px
 
-    # =========================
-    # COMBINE BUYER BASE
-    # =========================
     temp = df.copy()
 
-    temp["TOTAL_PROMO"] = (
-        temp["BUYER_PROMO_BEFORE"].fillna(0)
-        + temp["BUYER_PROMO_AFTER"].fillna(0)
-    )
+    # ======================
+    # AVERAGE BEFORE & AFTER
+    # ======================
+    temp["PROMO_SHARE_FINAL"] = (
+        temp["PROMO_SHARE_BEFORE"].fillna(0) +
+        temp["PROMO_SHARE_AFTER"].fillna(0)
+    ) / 2
 
-    temp["TOTAL_NON_PROMO"] = (
-        temp["BUYER_NON_PROMO_BEFORE"].fillna(0)
-        + temp["BUYER_NON_PROMO_AFTER"].fillna(0)
-    )
+    temp["NON_PROMO_SHARE_FINAL"] = (
+        temp["NON_PROMO_SHARE_BEFORE"].fillna(0) +
+        temp["NON_PROMO_SHARE_AFTER"].fillna(0)
+    ) / 2
 
-    temp["TOTAL_BUYER"] = temp["TOTAL_PROMO"] + temp["TOTAL_NON_PROMO"]
-
-    temp = temp[temp["TOTAL_BUYER"] > 0]
-
-    temp["PROMO_SHARE"] = temp["TOTAL_PROMO"] / temp["TOTAL_BUYER"]
-    temp["NON_PROMO_SHARE"] = temp["TOTAL_NON_PROMO"] / temp["TOTAL_BUYER"]
-
-    # =========================
-    # Melt for chart
-    # =========================
+    # ======================
+    # reshape for chart
+    # ======================
     chart_df = temp.melt(
         id_vars="CATEGORY",
-        value_vars=["PROMO_SHARE", "NON_PROMO_SHARE"],
+        value_vars=["PROMO_SHARE_FINAL", "NON_PROMO_SHARE_FINAL"],
         var_name="TYPE",
         value_name="SHARE"
     )
 
     chart_df["TYPE"] = chart_df["TYPE"].replace({
-        "PROMO_SHARE": "PROMO",
-        "NON_PROMO_SHARE": "NON PROMO"
+        "PROMO_SHARE_FINAL": "PROMO",
+        "NON_PROMO_SHARE_FINAL": "NON PROMO"
     })
 
-    # =========================
-    # Plot
-    # =========================
+    # ======================
+    # plot
+    # ======================
     fig = px.bar(
         chart_df,
         y="CATEGORY",
         x="SHARE",
-        color="TYPE",
         orientation="h",
+        color="TYPE",
         barmode="stack",
         text=chart_df["SHARE"].apply(lambda x: f"{x:.0%}"),
         color_discrete_map={
@@ -1042,10 +1034,10 @@ def render_category_promo_combined(df):
     )
 
     fig.update_layout(
+        title="PROMO CONTRIBUTION (AVERAGE)",
         xaxis_tickformat=".0%",
         height=500,
-        legend_title="",
-        title="PROMO CONTRIBUTION (COMBINED)"
+        legend_title=""
     )
 
     st.plotly_chart(fig, use_container_width=True)
