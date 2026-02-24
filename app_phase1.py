@@ -371,10 +371,10 @@ def display_styled_table(df):
     # Identifikasi semua kolom Growth
     growth_cols = [c for c in df.columns if "GROWTH" in c]
 
-    # --- FIX DATA TYPE & NULLS ---
     for col in growth_cols:
-        # Paksa konversi ke numeric, yang error (string kosong/teks) jadi NaN
-        df[col] = pd.to_numeric(df[col], errors='coerce')
+        if col in df.columns:
+            if isinstance(df[col], pd.Series):
+                df[col] = pd.to_numeric(df[col], errors='coerce')
 
     # --- LOGIKA PEWARNAAN MANUAL ---
     def apply_growth_color(val):
