@@ -398,18 +398,23 @@ def display_styled_table(df):
             format_dict[col] = "{:,.2f}"
 
     # Terapkan styling
-    styled_df = df.style.format(format_dict, na_rep="-")
+    # pastikan hanya kolom yg ada yg diformat
+    safe_format_dict = {k:v for k,v in format_dict.items() if k in df.columns}
+
+    styled_df = df.style.format(safe_format_dict, na_rep="-")
 
     valid_growth_cols = [c for c in growth_cols if c in df.columns]
 
-    if valid_growth_cols:
+    if len(valid_growth_cols) > 0:
         styled_df = styled_df.applymap(
             apply_growth_color,
             subset=valid_growth_cols
         )
 
-    # 🔥 TAMBAHKAN INI (freeze kolom pertama)
-    styled_df = styled_df.set_sticky(axis="columns")
+    try:
+        styled_df = styled_df.set_sticky(axis="columns")
+    except:
+        pass
     # Tampilkan di Streamlit
     st.dataframe(
         styled_df,
