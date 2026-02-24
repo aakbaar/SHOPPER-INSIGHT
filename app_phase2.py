@@ -206,8 +206,8 @@ def load_perf_file(level, versi):
 
 @st.cache_data
 def load_segment_unified():
-    if os.path.exists("perf_segmentation_unified.csv"):
-        return pd.read_csv("perf_segmentation_unified.csv")
+    if os.path.exists("perf_segmentation_unified_phase2.csv"):
+        return pd.read_csv("perf_segmentation_unified_phase2.csv")
     return pd.DataFrame()
 
 @st.cache_data
@@ -229,12 +229,12 @@ def load_loyalty_data():
         )
 
         return {
-            "br_loy_cat": pd.read_csv("BRAND_LOYALTY_CATEGORY.csv"),
-            "br_loy_sub": pd.read_csv("BRAND_LOYALTY_SUBCATEGORY.csv"),
-            "br_swi_cat": pd.read_csv("BRAND_SWITCH_CATEGORY.csv"),
-            "br_swi_sub": pd.read_csv("BRAND_SWITCH_SUBCATEGORY.csv"),
+            "br_loy_cat": pd.read_csv("BRAND_LOYALTY_CATEGORY_PHASE2.csv"),
+            "br_loy_sub": pd.read_csv("BRAND_LOYALTY_SUBCATEGORY_PHASE2.csv"),
+            "br_swi_cat": pd.read_csv("BRAND_SWITCH_CATEGORY_PHASE2.csv"),
+            "br_swi_sub": pd.read_csv("BRAND_SWITCH_SUBCATEGORY_PHASE2.csv"),
             "cat_loy": cat_loy_df,
-            "sub_loy": pd.read_csv("SUBCATEGORY_LOYALTY.csv")
+            "sub_loy": pd.read_csv("SUBCATEGORY_LOYALTY_PHASE2.csv")
         }
 
     except Exception as e:
@@ -244,10 +244,10 @@ def load_loyalty_data():
 @st.cache_data
 def load_affinity_data():
     files = {
-        "cat": "AFFINITY_CAT_PHASE1.csv",
-        "subcat": "AFFINITY_SUBCAT_PHASE1.csv",
-        "brand_cat": "AFFINITY_BRAND_CAT_PHASE1.csv",
-        "brand_sub": "AFFINITY_BRAND_SUBCAT_PHASE1.csv"
+        "cat": "AFFINITY_CAT_PHASE2.csv",
+        "subcat": "AFFINITY_SUBCAT_PHASE2.csv",
+        "brand_cat": "AFFINITY_BRAND_CAT_PHASE2.csv",
+        "brand_sub": "AFFINITY_BRAND_SUBCAT_PHASE2.csv"
     }
 
     data = {}
@@ -795,26 +795,6 @@ def main():
     except NameError:
         st.error("Variabel 'df_p' tidak ditemukan. Pastikan data performance sudah di-load di awal file.")
         return
-    st.sidebar.markdown("---")
-
-    st.sidebar.markdown("""
-    <a href="https://shopper-insight-phase2.streamlit.app/" target="_blank">
-        <button style="
-            width:100%;
-            background: linear-gradient(135deg, #FF0000, #CC0000);
-            color:white;
-            border:none;
-            padding:12px;
-            border-radius:12px;
-            font-weight:600;
-            font-size:14px;
-            cursor:pointer;
-            box-shadow: 0 4px 10px rgba(255,0,0,0.25);
-        ">
-            🚀 Buka Shopper Insight Phase 2
-        </button>
-    </a>
-    """, unsafe_allow_html=True)
 
     if menu == "📈 PERFORMANCE":
         col_title, col_plano, col_sec = st.columns([5, 2.5, 2.5])
@@ -823,7 +803,7 @@ def main():
         with col_sec: 
             # HAPUS ["ALL"] + dan gunakan index=start_idx
             sel_sec = st.selectbox("SECTION FILTER", sections_only, index=start_idx, key="sec_perf")
-        st.markdown(f"**Phase 1 [Juli - September 2025]**")
+        st.markdown(f"**Phase 2 [NOV 2026 - JAN 2026]**")
 
         st.markdown("---")
 
@@ -1001,7 +981,7 @@ def main():
             st.markdown('<h1 style="margin:0;">🔄 SWITCHING & LOYALTY ANALYSIS</h1>', unsafe_allow_html=True)
         with col_sec_filter:
             sel_sec_sw = st.selectbox("SECTION FILTER", sections_only, index=start_idx, key="sec_sw_top")
-        st.markdown(f"**Phase 1 [Juli - September 2025]**")
+        st.markdown(f"**Phase 2 [NOV 2025 - DES 2026]**")
 
         st.markdown("---")
         loy_data = load_loyalty_data()
@@ -1189,7 +1169,7 @@ def main():
 
         # SETUP OPSI PLANO
         plano_options = ["BEFORE_V1", "BEFORE_V2", "AFTER_V1", "AFTER_V2", "NOT_TRIAL"]
-        st.markdown(f"**Phase 1 [Juli - September 2025]**")
+        st.markdown(f"**Phase 2 [NOV 2025 -JAN 2026]**")
         with col_plano_filter:
             sel_plano = st.selectbox(
                 "VERSI PLANO",
