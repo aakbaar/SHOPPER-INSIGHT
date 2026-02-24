@@ -825,12 +825,6 @@ def render_category_promo_driven(df):
 
 def main():
     global df_p 
-    
-
-    sections_only = sorted(df_p["SECTION"].unique().tolist())
-
-    # Cari index pertama yang huruf depannya 'B' (Default ke 0 jika tidak ada)
-    start_idx = next((i for i, s in enumerate(sections_only) if str(s).startswith('B')), 0)
 
     st.sidebar.markdown("""
     <p class="sidebar-title-custom">
@@ -885,11 +879,16 @@ def main():
         col_title, col_plano, col_sec = st.columns([5, 2.5, 2.5])
         with col_title: st.title("📈 PERFORMANCE OVERVIEW")
         with col_plano: sel_plano = st.selectbox("VERSI PLANO", ["V1", "V2"], key="plano_perf")
-        # 🔥 Load df_p sesuai plano yang dipilih
-        # 🔥 Load perf dataset sesuai plano aktif
+        # 🔥 Load dataset perf sesuai plano
         df_p = load_perf_file("category", sel_plano)
 
-        # 🔥 Hitung universe transaksi global (dipakai affinity)
+        # 🔥 Build section list dari data tersebut
+        sections_only = sorted(df_p["SECTION"].dropna().unique().tolist())
+
+        # default index section huruf B
+        start_idx = next((i for i, s in enumerate(sections_only) if str(s).startswith('B')), 0)
+
+        # 🔥 Universe transaksi global
         global total_struk_global
         if 'df_raw' in globals():
             total_struk_global = df_raw['NO_STRUK'].nunique()
