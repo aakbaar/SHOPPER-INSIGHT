@@ -366,6 +366,10 @@ def display_styled_table(df):
 
     # 1. Bersihkan data (Copy agar tidak merusak dataframe asli)
     df = df.copy()
+
+# 🔥 FIX: hapus duplicate column name (penyebab pd.to_numeric error)
+    df = df.loc[:, ~df.columns.duplicated()]
+
     # Bersihkan kolom yang tidak perlu agar tampilan rapi
     cols_to_drop = [c for c in df.columns if "PROMO_PCT" in c]
     df = df.drop(columns=cols_to_drop, errors='ignore')
