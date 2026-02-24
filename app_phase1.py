@@ -1025,7 +1025,7 @@ def main():
             if df.empty: return df
             if sel_sec != "ALL": df = df[df["SECTION"] == sel_sec]
             return df.reset_index(drop=True)
-
+        st.markdown (" ---- ")
         with t_cat:
             df_f = apply_filter(load_perf_file("category", sel_plano))
             if not df_f.empty:
