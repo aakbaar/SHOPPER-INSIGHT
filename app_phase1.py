@@ -201,7 +201,7 @@ st.markdown("""
 def load_perf_file(level, versi):
     filename = f"perf_{level}_{versi.lower()}.csv"
     if os.path.exists(filename):
-        mtime = os.path.getmtime(filename)  # <- deteksi perubahan file
+        mtime = os.path.getmtime(filename)
         return pd.read_csv(filename)
     return pd.DataFrame()
 
