@@ -366,6 +366,7 @@ def display_styled_table(df):
 
     # 1. Bersihkan data (Copy agar tidak merusak dataframe asli)
     df = df.copy()
+    # Bersihkan kolom yang tidak perlu agar tampilan rapi
     cols_to_drop = [c for c in df.columns if "PROMO_PCT" in c]
     df = df.drop(columns=cols_to_drop, errors='ignore')
     
@@ -404,11 +405,11 @@ def display_styled_table(df):
     styled_df = df.style.format(safe_format_dict, na_rep="-")
 
     # PROTEKSI: Hanya applymap jika kolom growth ditemukan di dataframe saat ini
-    if growth_cols:
-        styled_df = styled_df.applymap(
-            apply_growth_color,
-            subset=pd.IndexSlice[:, growth_cols] # Menggunakan IndexSlice lebih stabil
-        )
+    valid_growth_cols = [c for c in growth_cols if c in df.columns]
+
+    if valid_growth_cols:
+        styled_df = styled_df.applymap(apply_growth_color, subset=valid_growth_cols)
+    
 
     # 6. Tampilkan ke Streamlit
     st.dataframe(
