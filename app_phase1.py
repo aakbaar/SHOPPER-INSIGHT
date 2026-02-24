@@ -284,8 +284,8 @@ def render_performance_cards(df, is_category=False):
     }
     
     if is_category:
-        metrics["pen_val"] = df["TRANSACTION_PENETRATION_AFTER"].mean() if "TRANSACTION_PENETRATION_AFTER" in df.columns else 0
-        metrics["pen_gr"] = df["TRANSACTION_PENETRATION_GROWTH"].mean() if "TRANSACTION_PENETRATION_GROWTH" in df.columns else 0
+        metrics["pen_val"] = df["TRANSACTION_PENETRATION_AFTER"].fillna(0).mean() if "TRANSACTION_PENETRATION_AFTER" in df.columns else 0
+        metrics["pen_gr"] = df["TRANSACTION_PENETRATION_GROWTH"].fillna(0).mean() if "TRANSACTION_PENETRATION_GROWTH" in df.columns else 0
         metrics["buyer_total"] = df["BUYER_COUNT_AFTER"].sum() if "BUYER_COUNT_AFTER" in df.columns else 0
 
     # Indikator Growth (Bubble)
@@ -643,7 +643,6 @@ def render_affinity_tab(df, col_a, col_b, filter_cols, key_prefix, show_qty_impa
             hide_index=True
         )
 
-df_p = load_perf_file("category", "V1")
 def render_plano_matrix(df):
     if df.empty: return
     
@@ -893,6 +892,8 @@ def main():
         col_title, col_plano, col_sec = st.columns([5, 2.5, 2.5])
         with col_title: st.title("📈 PERFORMANCE OVERVIEW")
         with col_plano: sel_plano = st.selectbox("VERSI PLANO", ["V1", "V2"], key="plano_perf")
+        # 🔥 Load df_p sesuai plano yang dipilih
+        df_p = load_perf_file("category", sel_plano)
         with col_sec: 
             # HAPUS ["ALL"] + dan gunakan index=start_idx
             sel_sec = st.selectbox("SECTION FILTER", sections_only, index=start_idx, key="sec_perf")
