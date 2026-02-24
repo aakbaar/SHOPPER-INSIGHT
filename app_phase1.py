@@ -850,10 +850,10 @@ def render_category_promo_driven(df):
         use_container_width=True,
         hide_index=True,
     )
-def render_category_promo_share_chart(df):
+def render_category_promo_combined(df):
     """
-    1 chart – BEFORE vs AFTER
-    Stacked 100% promo vs non promo per category
+    1 chart saja:
+    PROMO vs NON PROMO (gabungan BEFORE + AFTER)
     """
 
     if df.empty:
@@ -861,57 +861,55 @@ def render_category_promo_share_chart(df):
 
     required_cols = {
         "CATEGORY",
-        "PROMO_SHARE_BEFORE",
-        "NON_PROMO_SHARE_BEFORE",
-        "PROMO_SHARE_AFTER",
-        "NON_PROMO_SHARE_AFTER"
+        "BUYER_PROMO_BEFORE",
+        "BUYER_PROMO_AFTER",
+        "BUYER_NON_PROMO_BEFORE",
+        "BUYER_NON_PROMO_AFTER"
     }
 
     if not required_cols.issubset(df.columns):
-        st.info("Kolom promo share belum tersedia.")
+        st.info("Kolom buyer promo belum tersedia.")
         return
 
-    import plotly.express as px
     import pandas as pd
-
-    st.markdown("### 🎯 PROMO CONTRIBUTION (BEFORE vs AFTER)")
+    import plotly.express as px
 
     # =========================
-    # Build unified dataframe
+    # COMBINE BUYER BASE
     # =========================
-    before = df[[
-        "CATEGORY",
-        "PROMO_SHARE_BEFORE",
-        "NON_PROMO_SHARE_BEFORE"
-    ]].copy()
+    temp = df.copy()
 
-    before["PERIOD"] = "BEFORE"
-    before = before.rename(columns={
-        "PROMO_SHARE_BEFORE": "PROMO",
-        "NON_PROMO_SHARE_BEFORE": "NON PROMO"
-    })
+    temp["TOTAL_PROMO"] = (
+        temp["BUYER_PROMO_BEFORE"].fillna(0)
+        + temp["BUYER_PROMO_AFTER"].fillna(0)
+    )
 
-    after = df[[
-        "CATEGORY",
-        "PROMO_SHARE_AFTER",
-        "NON_PROMO_SHARE_AFTER"
-    ]].copy()
+    temp["TOTAL_NON_PROMO"] = (
+        temp["BUYER_NON_PROMO_BEFORE"].fillna(0)
+        + temp["BUYER_NON_PROMO_AFTER"].fillna(0)
+    )
 
-    after["PERIOD"] = "AFTER"
-    after = after.rename(columns={
-        "PROMO_SHARE_AFTER": "PROMO",
-        "NON_PROMO_SHARE_AFTER": "NON PROMO"
-    })
+    temp["TOTAL_BUYER"] = temp["TOTAL_PROMO"] + temp["TOTAL_NON_PROMO"]
 
-    combined = pd.concat([before, after], ignore_index=True)
+    temp = temp[temp["TOTAL_BUYER"] > 0]
 
-    # melt supaya stacked
-    chart_df = combined.melt(
-        id_vars=["CATEGORY", "PERIOD"],
-        value_vars=["PROMO", "NON PROMO"],
+    temp["PROMO_SHARE"] = temp["TOTAL_PROMO"] / temp["TOTAL_BUYER"]
+    temp["NON_PROMO_SHARE"] = temp["TOTAL_NON_PROMO"] / temp["TOTAL_BUYER"]
+
+    # =========================
+    # Melt for chart
+    # =========================
+    chart_df = temp.melt(
+        id_vars="CATEGORY",
+        value_vars=["PROMO_SHARE", "NON_PROMO_SHARE"],
         var_name="TYPE",
         value_name="SHARE"
     )
+
+    chart_df["TYPE"] = chart_df["TYPE"].replace({
+        "PROMO_SHARE": "PROMO",
+        "NON_PROMO_SHARE": "NON PROMO"
+    })
 
     # =========================
     # Plot
@@ -923,7 +921,6 @@ def render_category_promo_share_chart(df):
         color="TYPE",
         orientation="h",
         barmode="stack",
-        facet_col="PERIOD",   # ini bikin BEFORE & AFTER dalam 1 chart
         text=chart_df["SHARE"].apply(lambda x: f"{x:.0%}"),
         color_discrete_map={
             "PROMO": "#264653",
@@ -934,7 +931,8 @@ def render_category_promo_share_chart(df):
     fig.update_layout(
         xaxis_tickformat=".0%",
         height=500,
-        legend_title=""
+        legend_title="",
+        title="PROMO CONTRIBUTION (COMBINED)"
     )
 
     st.plotly_chart(fig, use_container_width=True)
