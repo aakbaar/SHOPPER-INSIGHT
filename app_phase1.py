@@ -364,65 +364,59 @@ def display_styled_table(df):
         st.warning("DATA TIDAK TERSEDIA")
         return
 
-    # Bersihkan kolom yang tidak perlu agar tampilan rapi
+    # 1. Bersihkan data (Copy agar tidak merusak dataframe asli)
+    df = df.copy()
     cols_to_drop = [c for c in df.columns if "PROMO_PCT" in c]
     df = df.drop(columns=cols_to_drop, errors='ignore')
     
-    # Identifikasi semua kolom Growth
-    growth_cols = [c for c in df.columns if "GROWTH" in c and df[c].ndim == 1]
+    # 2. Identifikasi kolom Growth secara dinamis dan pastikan ada di DF
+    # Kita hanya mengambil kolom yang BENAR-BENAR ada di df.columns
+    growth_cols = [c for c in df.columns if "GROWTH" in c]
 
+    # Pastikan tipe data numerik untuk kolom growth agar tidak error saat diwarnai
     for col in growth_cols:
-        if col in df.columns:
-            if isinstance(df[col], pd.Series):
-                df[col] = pd.to_numeric(df[col], errors='coerce')
+        df[col] = pd.to_numeric(df[col], errors='coerce')
 
-    # --- LOGIKA PEWARNAAN MANUAL ---
+    # 3. Logika pewarnaan
     def apply_growth_color(val):
         if pd.isna(val) or val == 0:
-            return 'background-color: white; color: black;'
+            return None # Jangan beri style jika kosong
         if val > 0:
             return 'background-color: #d4edda; color: #155724;'
         if val < 0:
             return 'background-color: #f8d7da; color: #721c24;'
-        return 'background-color: white; color: black;'
+        return None
 
-    # --- FORMATTING TAMPILAN ---
+    # 4. Dictionary Formatting
     format_dict = {}
     for col in df.columns:
         if "GROWTH" in col or "PENETRATION" in col:
             format_dict[col] = "{:.2%}"
-        elif any(x in col for x in ["SPT", "SPB"]):
+        elif any(x in col for x in ["SPT", "SPB", "SALES_VALUE"]):
             format_dict[col] = "Rp {:,.0f}"
-        # Pastikan AVG dan PURCHASE_FREQUENCY selalu 2 desimal di belakang koma
-        elif "AVG" in col or "PURCHASE_FREQUENCY" in col:
+        elif any(x in col for x in ["AVG", "FREQUENCY", "QTY"]):
             format_dict[col] = "{:,.2f}"
 
-    # Terapkan styling
-    # pastikan hanya kolom yg ada yg diformat
-    safe_format_dict = {k:v for k,v in format_dict.items() if k in df.columns}
-
+    # 5. Terapkan styling dengan proteksi KeyError
+    # Kita hanya memformat kolom yang ada di df
+    safe_format_dict = {k: v for k, v in format_dict.items() if k in df.columns}
+    
     styled_df = df.style.format(safe_format_dict, na_rep="-")
 
-    valid_growth_cols = [c for c in growth_cols if c in df.columns]
-
-    if len(valid_growth_cols) > 0:
+    # PROTEKSI: Hanya applymap jika kolom growth ditemukan di dataframe saat ini
+    if growth_cols:
         styled_df = styled_df.applymap(
             apply_growth_color,
-            subset=valid_growth_cols
+            subset=pd.IndexSlice[:, growth_cols] # Menggunakan IndexSlice lebih stabil
         )
 
-    try:
-        styled_df = styled_df.set_sticky(axis="columns")
-    except:
-        pass
-    # Tampilkan di Streamlit
+    # 6. Tampilkan ke Streamlit
     st.dataframe(
         styled_df,
         use_container_width=True, 
         hide_index=True
     )
     
-    # Menambahkan Keterangan Label secara otomatis di bawah semua tabel Performance
     st.caption("ℹ️ Keterangan Tabel = **SPT** (Spend Per Trip) | **SPB** (Spend Per Buyer)")
    
 # ===============================================================
