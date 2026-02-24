@@ -444,7 +444,7 @@ def reorder_final(df, level):
         "SPT_BEFORE", "SPT_AFTER", "SPT_GROWTH",
         "SPB_BEFORE", "SPB_AFTER", "SPB_GROWTH"
     ]
-    
+
     # Tambahkan Penetration HANYA untuk level category  
     if level == "category":
         metric_order += [
