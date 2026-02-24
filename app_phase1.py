@@ -369,7 +369,7 @@ def display_styled_table(df):
     df = df.drop(columns=cols_to_drop, errors='ignore')
     
     # Identifikasi semua kolom Growth
-    growth_cols = [c for c in df.columns if "GROWTH" in c]
+    growth_cols = [c for c in df.columns if "GROWTH" in c and df[c].ndim == 1]
 
     for col in growth_cols:
         if col in df.columns:
@@ -400,8 +400,10 @@ def display_styled_table(df):
     # Terapkan styling
     styled_df = df.style.format(format_dict, na_rep="-")
 
-    if growth_cols:
-        styled_df = styled_df.map(apply_growth_color, subset=growth_cols)
+    valid_growth_cols = [c for c in growth_cols if c in df.columns]
+
+    if valid_growth_cols:
+        styled_df = styled_df.map(apply_growth_color, subset=valid_growth_cols)
 
     # 🔥 TAMBAHKAN INI (freeze kolom pertama)
     styled_df = styled_df.set_sticky(axis="columns")
