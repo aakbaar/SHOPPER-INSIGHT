@@ -772,54 +772,49 @@ def render_static_affinity_matrix():
         st.info(f"Matriks varian belum tersedia: {e}")
 
 def render_switching_cards(total_sw, total_no, top_dest_name, top_dest_pct):
-    """Render 3 KPI Cards for Switching Menu (English)"""
-    total = total_sw + total_no
-    if total == 0: return
 
-    pct_sw = total_sw / total
-    pct_no = total_no / total
+    pct_sw = total_sw / (total_sw + total_no) if (total_sw + total_no) > 0 else 0
+    pct_no = total_no / (total_sw + total_no) if (total_sw + total_no) > 0 else 0
 
     card_style = """
         background-color: #F8F9FA; 
-        border-radius: 8px; 
-        padding: 12px; 
-        height: 80px; 
-        border: 1px solid #EEE;
+        border-radius: 10px; 
+        padding: 16px; 
+        height: 150px;
+        border: 1px solid #E5E7EB;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
     """
 
     cols = st.columns(3)
-    
+
     with cols[0]:
         st.markdown(f"""
             <div style="{card_style}; border-bottom: 4px solid #E1B7B3;">
-                <p style="color:#666; font-size:12px; margin:0; font-weight:600; text-transform:uppercase;">Switch Rate</p>
-                <div style="font-size:32px; font-weight:500; color:#1E293B; line-height:1.2;">{pct_sw:.2%}</div>
-                <p style="color:#888; font-size:8px; margin:0;">Total: {total_sw:,} Buyers</p>
+                <div style="font-size:12px; font-weight:600; color:#6B7280;">SWITCH RATE</div>
+                <div style="font-size:30px; font-weight:700; color:#111827;">{pct_sw:.2%}</div>
+                <div style="font-size:11px; color:#9CA3AF;">Total: {total_sw:,} Buyers</div>
             </div>
         """, unsafe_allow_html=True)
-        
+
     with cols[1]:
         st.markdown(f"""
-            <div style="{card_style}; border-bottom: 4px solid #AEE3B2;">
-                <p style="color:#666; font-size:12px; margin:0; font-weight:600; text-transform:uppercase;">Retention Rate (No Switch)</p>
-                <div style="font-size:32px; font-weight:800; color:#1E293B; line-height:1.2;">{pct_no:.2%}</div>
-                <p style="color:#888; font-size:11px; margin:0;">Total: {total_no:,} Buyers</p>
+            <div style="{card_style}; border-bottom: 4px solid #B7E1C1;">
+                <div style="font-size:12px; font-weight:600; color:#6B7280;">RETENTION RATE</div>
+                <div style="font-size:30px; font-weight:700; color:#111827;">{pct_no:.2%}</div>
+                <div style="font-size:11px; color:#9CA3AF;">Total: {total_no:,} Buyers</div>
             </div>
         """, unsafe_allow_html=True)
 
     with cols[2]:
         st.markdown(f"""
-            <div style="{card_style}; border-bottom: 4px solid #3498DB;">
-                <p style="color:#666; font-size:12px; margin:0; font-weight:600; text-transform:uppercase;">Top Destination</p>
-                <div style="font-size:32px; font-weight:800; color:#1E293B; line-height:1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{top_dest_name}">{top_dest_name}</div>
-                <p style="color:#888; font-size:8px; margin:0;">Share: {top_dest_pct:.2%} of Switchers</p>
+            <div style="{card_style}; border-bottom: 4px solid #93C5FD;">
+                <div style="font-size:12px; font-weight:600; color:#6B7280;">TOP DESTINATION</div>
+                <div style="font-size:26px; font-weight:700; color:#111827;">{top_dest_name}</div>
+                <div style="font-size:11px; color:#9CA3AF;">Share: {top_dest_pct:.2%}</div>
             </div>
         """, unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
 
 def render_category_promo_driven(df):
     """
