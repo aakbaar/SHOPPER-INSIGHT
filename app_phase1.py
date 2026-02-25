@@ -22,23 +22,6 @@ h2 { font-size: 20px; }
 h3 { font-size: 16px; }
 
 /* ========================= */
-/* METRIC CARD COMPACT */
-/* ========================= */
-
-div[data-testid="metric-container"] {
-    padding: 10px 10px;
-    border-radius: 8px;
-}
-
-/* ========================= */
-/* DATAFRAME SAFE */
-/* ========================= */
-
-div[data-testid="stDataFrame"] {
-    overflow: auto;
-}
-
-/* ========================= */
 /* SIDEBAR TETAP NORMAL */
 /* ========================= */
 
@@ -464,7 +447,7 @@ def display_styled_table(df):
 
     if growth_cols:
         styled_df = styled_df.map(apply_growth_color, subset=growth_cols)
-        
+
     # Tampilkan di Streamlit
     st.dataframe(
         styled_df,
