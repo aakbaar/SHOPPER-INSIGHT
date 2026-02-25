@@ -4,14 +4,9 @@ st.markdown("""
 <style>
 /* Kecilkan lebar layout utama */
 .block-container {
-    max-width: 1200px;
-    padding-top: 1rem;
-    padding-bottom: 0rem;
+    max-width: 1400px;
+    padding-top: 3rem;
 }
-
-/* ========================= */
-/* FONT SCALING */
-/* ========================= */
 
 html, body, [class*="css"]  {
     font-size: 13px;
