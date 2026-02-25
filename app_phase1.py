@@ -450,33 +450,31 @@ def display_styled_table(df):
         return None
 
     # 4. Dictionary Formatting
-    format_dict = {}
+    # 6. FORMAT INTERAKTIF STREAMLIT
+    column_config = {}
+
     for col in df.columns:
+
         if "GROWTH" in col or "PENETRATION" in col:
-            format_dict[col] = "{:.2%}"
+            column_config[col] = st.column_config.NumberColumn(
+                format="%.2f%%"
+            )
+
         elif any(x in col for x in ["SPT", "SPB", "SALES_VALUE"]):
-            format_dict[col] = "Rp {:,.0f}"
+            column_config[col] = st.column_config.NumberColumn(
+                format="Rp %.0f"
+            )
+
         elif any(x in col for x in ["AVG", "FREQUENCY", "QTY"]):
-            format_dict[col] = "{:,.2f}"
+            column_config[col] = st.column_config.NumberColumn(
+                format="%.2f"
+            )
 
-    # 5. Terapkan styling dengan proteksi KeyError
-    # Kita hanya memformat kolom yang ada di df
-    safe_format_dict = {k: v for k, v in format_dict.items() if k in df.columns}
-    
-    styled_df = df.style.format(safe_format_dict, na_rep="-")
-
-    # PROTEKSI: Hanya applymap jika kolom growth ditemukan di dataframe saat ini
-    valid_growth_cols = [c for c in growth_cols if c in df.columns]
-
-    if valid_growth_cols:
-        styled_df = styled_df.applymap(apply_growth_color, subset=valid_growth_cols)
-    
-
-    # 6. Tampilkan ke Streamlit
     st.dataframe(
-        styled_df,
-        use_container_width=True, 
-        hide_index=True
+        df,
+        use_container_width=True,
+        hide_index=True,
+        column_config=column_config
     )
     
     st.caption("ℹ️ Keterangan Tabel = **SPT** (Spend Per Trip) | **SPB** (Spend Per Buyer)")
