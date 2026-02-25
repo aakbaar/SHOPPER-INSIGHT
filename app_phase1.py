@@ -1091,7 +1091,7 @@ def main():
         with col_sec: 
             # HAPUS ["ALL"] + dan gunakan index=start_idx
             sel_sec = st.selectbox("SECTION FILTER", sections_only, index=start_idx, key="sec_perf")
-        st.markdown(f"**[JUL - SEP 2025]**")
+        st.markdown(f"**[JUL 2025 - SEP 2025]**")
 
         st.markdown("---")
 
@@ -1275,7 +1275,7 @@ def main():
             st.markdown('<h1 style="margin:0;">🔄 SWITCHING & LOYALTY ANALYSIS</h1>', unsafe_allow_html=True)
         with col_sec_filter:
             sel_sec_sw = st.selectbox("SECTION FILTER", sections_only, index=start_idx, key="sec_sw_top")
-        st.markdown(f"**[JUL - SEP 2025]**")
+        st.markdown(f"**[JUL 2025 - SEP 2025]**")
 
         st.markdown("---")
         loy_data = load_loyalty_data()
@@ -1534,7 +1534,7 @@ def main():
 
         # SETUP OPSI PLANO
         plano_options = ["BEFORE_V1", "BEFORE_V2", "AFTER_V1", "AFTER_V2", "NOT_TRIAL"]
-        st.markdown(f"**[JUL - SEP 2025]**")
+        st.markdown(f"**[JUL 2025 - SEP 2025]**")
         with col_plano_filter:
             sel_plano = st.selectbox(
                 "VERSI PLANO",
