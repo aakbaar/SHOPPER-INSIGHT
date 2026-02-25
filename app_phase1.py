@@ -31,22 +31,6 @@ div[data-testid="metric-container"] {
 }
 
 /* ========================= */
-/* DATAFRAME SAFE */
-/* ========================= */
-
-div[data-testid="stDataFrame"] {
-    overflow: auto;
-}
-
-/* sticky header tetap aman */
-div[data-testid="stDataFrame"] thead tr th {
-    position: sticky;
-    top: 0;
-    background: white;
-    z-index: 2;
-}
-
-/* ========================= */
 /* SIDEBAR TETAP NORMAL */
 /* ========================= */
 
@@ -75,28 +59,6 @@ div[data-testid="stVerticalBlock"] {
 div[data-testid="stVerticalBlock"] > div:empty {
     display: none;
 }
-div[data-testid="stDataFrame"] table th:first-child,
-div[data-testid="stDataFrame"] table td:first-child {
-    position: sticky;
-    left: 0;
-    background: white;
-    z-index: 2;
-    border-right: 1px solid #ddd;
-}
-/* Freeze first column on all Streamlit dataframes */
-div[data-testid="stDataFrame"] table {
-    border-collapse: separate !important;
-}
-
-div[data-testid="stDataFrame"] th:first-child,
-div[data-testid="stDataFrame"] td:first-child {
-    position: sticky;
-    left: 0;
-    background: white;
-    z-index: 3;
-    border-right: 2px solid #ddd;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
