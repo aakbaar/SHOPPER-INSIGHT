@@ -495,8 +495,8 @@ def display_styled_table(df):
 
     # 6. Tampilkan ke Streamlit
     st.dataframe(
-        df,
-        use_container_width=True,
+        styled_df,
+        use_container_width=True, 
         hide_index=True
     )
     
