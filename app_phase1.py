@@ -1261,27 +1261,7 @@ def main():
 
                     # Buat layout horizontal
                     # filter bar full width
-                    col_filters = st.columns([1]*len(all_filters), gap="large")
-
-                    # CSS: popover full width kolom
-                    st.markdown("""
-                    <style>
-                    /* popover full width */
-                    div[data-testid="stPopover"] {
-                        width: 100% !important;
-                    }
-
-                    div[data-testid="stPopover"] > div {
-                        width: 100% !important;
-                        min-width: 400px !important;
-                    }
-
-                    /* isi popover lebih lega */
-                    div[data-baseweb="popover"] {
-                        padding: 14px !important;
-                    }
-                    </style>
-                    """, unsafe_allow_html=True)
+                    col_filters = st.columns(len(all_filters), gap="large")
 
                     active_filters = {}
 
