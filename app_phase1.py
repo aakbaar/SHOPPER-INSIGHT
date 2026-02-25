@@ -370,7 +370,7 @@ def render_performance_cards(df, is_category=False):
         with cols[0]:
             st.markdown(f"""
                 <div style="{card_container_style}">
-                    <p style="color:#666; font-size:14px; margin:0; font-weight:500;">Transaction Penetration</p>
+                    <p style="color:#666; font-size:12px; margin:0; font-weight:500;">Transaction Penetration</p>
                     <div style="font-size:32px; font-weight:bold; color:#000; line-height:1.1;">{metrics['pen_val']:.2%}</div>
                     {get_delta_html(metrics['pen_gr'])}
                     <p style="color:#888; font-size:11px; margin:0;">Total Buyers: {metrics['buyer_total']:,}</p>
