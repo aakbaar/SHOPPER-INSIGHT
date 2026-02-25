@@ -788,7 +788,7 @@ def render_switching_cards(total_sw, total_no, top_dest_name, top_dest_pct):
         background-color: #F8F9FA; 
         border-radius: 8px; 
         padding: 12px; 
-        min-height: 100px; 
+        height: 100px; 
         border: 1px solid #EEE;
         display: flex;
         flex-direction: column;
@@ -797,7 +797,7 @@ def render_switching_cards(total_sw, total_no, top_dest_name, top_dest_pct):
         overflow: hidden;
     """
 
-    cols = st.columns(3) # Dibagi rata menjadi 3 kolom
+    cols = st.columns(3, vertical_alignment="stretch")
     
     with cols[0]:
         st.markdown(f"""
