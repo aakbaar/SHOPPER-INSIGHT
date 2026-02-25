@@ -803,8 +803,8 @@ def render_switching_cards(total_sw, total_no, top_dest_name, top_dest_pct):
         st.markdown(f"""
             <div style="{card_style}; border-bottom: 4px solid #E1B7B3;">
                 <p style="color:#666; font-size:13px; margin:0; font-weight:600; text-transform:uppercase;">Switch Rate</p>
-                <div style="font-size:32px; font-weight:800; color:#1E293B; line-height:1.2;">{pct_sw:.2%}</div>
-                <p style="color:#888; font-size:11px; margin:0;">Total: {total_sw:,} Buyers</p>
+                <div style="font-size:32px; font-weight:500; color:#1E293B; line-height:1.2;">{pct_sw:.2%}</div>
+                <p style="color:#888; font-size:8px; margin:0;">Total: {total_sw:,} Buyers</p>
             </div>
         """, unsafe_allow_html=True)
         
