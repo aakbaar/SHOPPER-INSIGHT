@@ -460,24 +460,20 @@ def display_styled_table(df):
             format_dict[col] = "{:,.2f}"
 
     # 5. Terapkan styling dengan proteksi KeyError
-    # Kita hanya memformat kolom yang ada di df
-    safe_format_dict = {k: v for k, v in format_dict.items() if k in df.columns}
-    
+    styled_df = df.style.format(format_dict, na_rep="-")
+
+    if growth_cols:
+        styled_df = styled_df.map(apply_growth_color, subset=growth_cols)
+
+    # 🔥 TAMBAHKAN INI (freeze kolom pertama)
     styled_df = styled_df.set_sticky(axis="columns")
-
-    # PROTEKSI: Hanya applymap jika kolom growth ditemukan di dataframe saat ini
-    valid_growth_cols = [c for c in growth_cols if c in df.columns]
-
-    if valid_growth_cols:
-        styled_df = styled_df.applymap(apply_growth_color, subset=valid_growth_cols)
-    
-
-    # 6. Tampilkan ke Streamlit
+    # Tampilkan di Streamlit
     st.dataframe(
         styled_df,
         use_container_width=True, 
         hide_index=True
     )
+    
     
     
     st.caption("ℹ️ Keterangan Tabel = **SPT** (Spend Per Trip) | **SPB** (Spend Per Buyer)")
