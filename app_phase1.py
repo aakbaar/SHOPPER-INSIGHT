@@ -106,7 +106,7 @@ import plotly.express as px
 import os
 
 pd.set_option("styler.render.max_elements", 1000000) 
-st.set_page_config(layout="wide", page_title="SHOPPER INSIGHT", page_icon="📊")
+st.set_page_config(layout="wide", page_title="SHOPPER INSIGHT | Phase 1", page_icon="📊")
 
 # --- CUSTOM CSS (SIDEBAR, TABS, & AFFINITY DARK MODE) ---
 # --- CUSTOM CSS (SIDEBAR, TABS, & AFFINITY DARK MODE) ---
