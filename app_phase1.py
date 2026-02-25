@@ -38,14 +38,6 @@ div[data-testid="stDataFrame"] {
     overflow: auto;
 }
 
-/* sticky header tetap aman */
-div[data-testid="stDataFrame"] thead tr th {
-    position: sticky;
-    top: 0;
-    background: white;
-    z-index: 2;
-}
-
 /* ========================= */
 /* SIDEBAR TETAP NORMAL */
 /* ========================= */
