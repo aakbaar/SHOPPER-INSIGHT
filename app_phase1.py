@@ -788,11 +788,9 @@ def render_switching_cards(total_sw, total_no, top_dest_name, top_dest_pct):
         display: flex;
         flex-direction: column;
         justify-content: center;
-        position: relative;
-        overflow: hidden;
     """
 
-    cols = st.columns(3, vertical_alignment="stretch")
+    cols = st.columns(3)
     
     with cols[0]:
         st.markdown(f"""
