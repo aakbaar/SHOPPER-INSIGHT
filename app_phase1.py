@@ -267,8 +267,7 @@ def load_affinity_data():
         "brand_cat": "AFFINITY_BRAND_CAT_PHASE1.csv",
         "brand_sub": "AFFINITY_BRAND_SUBCAT_PHASE1.csv"
         "same_brand_cat": "AFFINITY_SAME_BRAND_CAT_PHASE1.csv",
-        "same_brand_sub": "AFFINITY_SAME_BRAND_SUB_PHASE1.csv"
-
+        "same_brand_sub": "AFFINITY_SAME_BRAND_SUB_PHASE1.csv",
     }
 
     data = {}
