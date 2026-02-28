@@ -1476,11 +1476,13 @@ def main():
             st.error("Data Affinity tidak ditemukan!")
         else:
 
-            tab1, tab2, tab3, tab4 = st.tabs([
+            tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
                 "CATEGORY",
                 "SUB-CATEGORY",
                 "BRAND/CAT",
-                "BRAND/SUBCAT"
+                "BRAND/SUBCAT",
+                "SAME BRAND / CROSS CAT",
+                "SAME BRAND / CROSS SUBCAT"
             ])
 
             # ======================================================
@@ -1614,6 +1616,52 @@ def main():
                     "bs_aff",
                     show_qty_impact=False
                 )
+             # ======================================================
+            # TAB 5 — SAME BRAND CROSS CATEGORY (1 SECTION)
+            # ======================================================
+            with tab5:
+                df_sbc = aff["same_brand_cat"].copy()
+                df_f = filter_affinity_base(df_sbc, sel_sec_aff, sel_plano)
+
+                if df_f.empty:
+                    st.warning("Data Same Brand Cross Category tidak tersedia.")
+                    st.stop()
+
+                df_f = df_f.dropna(subset=["brand"]).reset_index(drop=True)
+
+                st.subheader(f"SAME BRAND - CROSS CATEGORY : {sel_sec_aff}")
+
+                render_affinity_tab(
+                    df_f,
+                    "category_a",
+                    "category_b",
+                    ["brand", "category_a", "category_b"],
+                    "sbc_aff",
+                    show_qty_impact=False
+                )
+                # ======================================================
+                # TAB 6 — SAME BRAND CROSS SUBCATEGORY (1 CATEGORY)
+                # ======================================================
+                with tab6:
+                    df_sbs = aff["same_brand_subcat"].copy()
+                    df_f = filter_affinity_base(df_sbs, sel_sec_aff, sel_plano)
+
+                    if df_f.empty:
+                        st.warning("Data Same Brand Cross Subcategory tidak tersedia.")
+                        st.stop()
+
+                    df_f = df_f.dropna(subset=["brand"]).reset_index(drop=True)
+
+                    st.subheader(f"SAME BRAND - CROSS SUBCATEGORY : {sel_sec_aff}")
+
+                    render_affinity_tab(
+                        df_f,
+                        "subcategory_a",
+                        "subcategory_b",
+                        ["brand", "subcategory_a", "subcategory_b"],
+                        "sbs_aff",
+                        show_qty_impact=False
+                    )
 
         # ======================================================
         # TABEL MAPPING REFERENSI (PIVOT VERSION - CLEAN)
