@@ -266,8 +266,8 @@ def load_affinity_data():
         "subcat": "AFFINITY_SUBCAT_PHASE1.csv",
         "brand_cat": "AFFINITY_BRAND_CAT_PHASE1.csv",
         "brand_sub": "AFFINITY_BRAND_SUBCAT_PHASE1.csv",
-        "same_brand_cat": "AFFINITY_SAME_BRAND_CAT_PHASE1.csv",
-        "same_brand_sub": "AFFINITY_SAME_BRAND_SUB_PHASE1.csv",
+        "same_brand_cat": "AFFINITY_BRAND_SAME_CAT_PHASE1.csv",
+        "same_brand_sub": "AFFINITY_BRAND_SAME_SUBCAT_PHASE1.csv",
     }
 
     data = {}
@@ -1631,7 +1631,7 @@ def main():
 
                 df_f = df_f.dropna(subset=["brand"]).reset_index(drop=True)
 
-                st.subheader(f"SAME BRAND - CROSS CATEGORY : {sel_sec_aff}")
+                st.subheader(f"SAME BRAND - CROSS CATEGORY : {sel_sec_aff}")    
 
                 render_affinity_tab(
                     df_f,
