@@ -339,32 +339,35 @@ def render_performance_cards(df, is_category=False):
                     padding:2px 6px; border-radius:12px; font-size:10px; font-weight:bold; margin-top:4px;">
                     {icon} {val:+.2%}</div>"""
 
-    # Buat Kolom
     cols = st.columns(4 if is_category else 3)
 
-
-    # 1. Category Penetration
+    # ==============================
+    # 1. CATEGORY PENETRATION
+    # ==============================
     if is_category:
         with cols[0]:
+            border_color = "#3498DB"
+
             st.markdown(f"""
-                <div style="{card_style}">
-                    <div>
-                        <p style="color:#6B7280; font-size:12px; margin:0; font-weight:600;">
-                            Transaction Penetration
-                        </p>
-                        <div style="font-size:27px; font-weight:700; color:#111827; margin-top:4px;">
-                            {metrics['pen_val']:.2%}
-                        </div>
-                        {get_delta_html(metrics['pen_gr'])}
+                <div style="{card_style}; border-bottom: 4px solid {border_color};">
+                    <p style="color:#666; font-size:11px; margin:0; font-weight:600; text-transform:uppercase;">
+                        Transaction Penetration
+                    </p>
+                    <div style="font-size:26px; font-weight:800; color:#1E293B; line-height:1.2;">
+                        {metrics['pen_val']:.2%}
                     </div>
-                    <p style="color:#9CA3AF; font-size:10px; margin:0;">
+                    <p style="color:#888; font-size:11px; margin:0;">
+                        Growth: {metrics['pen_gr']:+.2%}
+                    </p>
+                    <p style="color:#888; font-size:11px; margin:0;">
                         Total Buyers: {metrics['buyer_total']:,}
                     </p>
                 </div>
             """, unsafe_allow_html=True)
 
-
-    # 2. Metrik Lainnya
+    # ==============================
+    # 2. OTHER METRICS
+    # ==============================
     idx_start = 1 if is_category else 0
 
     m_list = [
@@ -374,21 +377,29 @@ def render_performance_cards(df, is_category=False):
     ]
 
     for i, (label, val, gr, fmt) in enumerate(m_list):
+
+        # Warna bawah berdasarkan growth
+        if gr >= 0:
+            border_color = "#AEE3B2"   # hijau soft
+        else:
+            border_color = "#E1B7B3"   # merah soft
+
         with cols[idx_start + i]:
             st.markdown(f"""
-                <div style="{card_style}">
-                    <div>
-                        <p style="color:#6B7280; font-size:11px; margin:0; font-weight:600;">
-                            {label}
-                        </p>
-                        <div style="font-size:27px; font-weight:700; color:#111827; margin-top:4px;">
-                            {fmt.format(val)}
-                        </div>
-                        {get_delta_html(gr)}
+                <div style="{card_style}; border-bottom: 4px solid {border_color};">
+                    <p style="color:#666; font-size:11px; margin:0; font-weight:600; text-transform:uppercase;">
+                        {label}
+                    </p>
+                    <div style="font-size:26px; font-weight:800; color:#1E293B; line-height:1.2;">
+                        {fmt.format(val)}
                     </div>
-                    <p style="visibility:hidden; margin:0;">placeholder</p>
+                    <p style="color:#888; font-size:11px; margin:0;">
+                        Growth: {gr:+.2%}
+                    </p>
                 </div>
             """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
 
 # ===============================================================
 # GLOBAL HELPERS (Sesuai Kolom Baru)
