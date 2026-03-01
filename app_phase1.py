@@ -292,16 +292,6 @@ def render_performance_cards(df, is_category=False):
     """Versi Uniform & Clean: Ukuran diperbesar, teks div bocor dihapus"""
     if df.empty:
         return
-    card_style = """
-        background-color: #F8F9FA; 
-        border-radius: 8px; 
-        padding: 12px 14px; 
-        height: 135px; 
-        border: 1px solid #EEE;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    """
 
     # Hitung rata-rata metrik
     metrics = {
@@ -336,8 +326,19 @@ def render_performance_cards(df, is_category=False):
         t_color = "#2E7D32" if val > 0 else "#C62828"
         icon = "↑" if val > 0 else "↓"
         return f"""<div style="display:inline-block; background-color:{color}; color:{t_color}; 
-                    padding:2px 6px; border-radius:12px; font-size:10px; font-weight:bold; margin-top:4px;">
+                    padding:2px 10px; border-radius:12px; font-size:12px; font-weight:bold; margin-top:0px;">
                     {icon} {val:+.2%}</div>"""
+
+    card_style = """
+        background-color: #F8F9FA; 
+        border-radius: 8px; 
+        padding: 12px 14px; 
+        height: 125px; 
+        border: 1px solid #EEE;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    """
 
     cols = st.columns(4 if is_category else 3)
 
@@ -355,11 +356,11 @@ def render_performance_cards(df, is_category=False):
                     <p style="color:#6B7280; font-size:12px; margin:0; font-weight:600;">
                         Transaction Penetration
                     </p>
-                    <div style="font-size:30px; font-weight:800; margin-top:4px;">
+                    <div style="font-size:28px; font-weight:700; margin-top:0px;">
                         {metrics['pen_val']:.2%}
                     </div>
                     {get_delta_html(gr)}
-                    <p style="color:#9CA3AF; font-size:11px; margin-top:4px;">
+                    <p style="color:#9CA3AF; font-size:11px; margin-top:0px;">
                         Total Buyers: {metrics['buyer_total']:,}
                     </p>
                 </div>
@@ -387,7 +388,7 @@ def render_performance_cards(df, is_category=False):
                     <p style="color:#6B7280; font-size:12px; margin:0; font-weight:600;">
                         {label}
                     </p>
-                    <div style="font-size:30px; font-weight:800; margin-top:4px;">
+                    <div style="font-size:28px; font-weight:700; margin-top:0px;">
                         {fmt.format(val)}
                     </div>
                     {get_delta_html(gr)}
