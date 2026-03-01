@@ -326,7 +326,7 @@ def render_performance_cards(df, is_category=False):
         t_color = "#2E7D32" if val > 0 else "#C62828"
         icon = "↑" if val > 0 else "↓"
         return f"""<div style="display:inline-block; background-color:{color}; color:{t_color}; 
-                    padding:2px 10px; border-radius:12px; font-size:12px; font-weight:bold; margin-top:4px;">
+                    padding:2px 6px; border-radius:12px; font-size:10px; font-weight:bold; margin-top:4px;">
                     {icon} {val:+.2%}</div>"""
 
     # Buat Kolom
@@ -336,12 +336,8 @@ def render_performance_cards(df, is_category=False):
     card_container_style = """
         background-color: #F8F9FA; 
         border-radius: 8px; 
-        padding: 12px; 
-        min-height: 80px; 
+        padding: 8px 12px; 
         border: 1px solid #EEE;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
     """
 
     # 1. Category Penetration
