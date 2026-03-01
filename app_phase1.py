@@ -415,14 +415,6 @@ def display_styled_table(df):
     # Bersihkan kolom yang tidak perlu agar tampilan rapi
     cols_to_drop = [c for c in df.columns if "PROMO_PCT" in c]
     df = df.drop(columns=cols_to_drop, errors='ignore')
-
-    # =========================
-    # ✅ INI YANG DITAMBAHKAN
-    # =========================
-    first_col = df.columns[0]
-    df = df.set_index(first_col)
-    df.index.name = None
-    # =========================
     
     # 2. Identifikasi kolom Growth secara dinamis dan pastikan ada di DF
     # Kita hanya mengambil kolom yang BENAR-BENAR ada di df.columns
@@ -452,13 +444,11 @@ def display_styled_table(df):
         elif any(x in col for x in ["AVG", "FREQUENCY", "QTY"]):
             format_dict[col] = "{:,.2f}"
 
+    # 5. Terapkan styling dengan proteksi KeyError
     styled_df = df.style.format(format_dict, na_rep="-")
 
     if growth_cols:
-        styled_df = styled_df.applymap(
-            apply_growth_color,
-            subset=pd.IndexSlice[:, growth_cols]
-        )
+        styled_df = styled_df.map(apply_growth_color, subset=growth_cols)
 
     # Tampilkan di Streamlit
     st.dataframe(
