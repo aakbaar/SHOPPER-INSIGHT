@@ -1445,7 +1445,6 @@ def main():
                                 .nunique()
                                 .reset_index()
                                 .sort_values("BUYER_ID", ascending=False)
-                                .head(8)
                             )
 
                             total_dest = dest_data["BUYER_ID"].sum()
