@@ -1447,7 +1447,7 @@ def main():
                                 .sort_values("BUYER_ID", ascending=False)
                             )
 
-                            total_dest = dest_data["BUYER_ID"].sum()
+                            total_dest = total_sw
 
                             fig_dest_pie = px.pie(
                                 dest_data,
