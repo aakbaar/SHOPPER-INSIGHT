@@ -386,6 +386,7 @@ def render_performance_cards(df, is_category=False):
                         </div>
                         {get_delta_html(gr)}
                     </div>
+                    <p style="visibility:hidden; margin:0;">placeholder</p>
                 </div>
             """, unsafe_allow_html=True)
 
