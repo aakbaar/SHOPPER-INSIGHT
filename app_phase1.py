@@ -348,28 +348,18 @@ def render_performance_cards(df, is_category=False):
         with cols[0]:
 
             gr = metrics['pen_gr']
-
-            if gr >= 0:
-                border_color = "#AEE3B2"
-                growth_color = "#2E7D32"
-                icon = "↑"
-            else:
-                border_color = "#E1B7B3"
-                growth_color = "#C62828"
-                icon = "↓"
+            border_color = "#AEE3B2" if gr > 0 else "#E1B7B3"
 
             st.markdown(f"""
-                <div style="{card_style}; border-bottom: 4px solid {border_color};">
-                    <p style="color:#666; font-size:11px; margin:0; font-weight:600; text-transform:uppercase;">
+                <div style="{card_style}; border-bottom:4px solid {border_color};">
+                    <p style="color:#6B7280; font-size:12px; margin:0; font-weight:600;">
                         Transaction Penetration
                     </p>
-                    <div style="font-size:26px; font-weight:800; color:#1E293B; line-height:1.2;">
+                    <div style="font-size:30px; font-weight:800; margin-top:4px;">
                         {metrics['pen_val']:.2%}
                     </div>
-                    <p style="font-size:12px; margin:2px 0 0 0; font-weight:600; color:{growth_color};">
-                        {icon} {gr:+.2%}
-                    </p>
-                    <p style="color:#888; font-size:11px; margin:2px 0 0 0;">
+                    {get_delta_html(gr)}
+                    <p style="color:#9CA3AF; font-size:11px; margin-top:4px;">
                         Total Buyers: {metrics['buyer_total']:,}
                     </p>
                 </div>
@@ -388,27 +378,19 @@ def render_performance_cards(df, is_category=False):
 
     for i, (label, val, gr, fmt) in enumerate(m_list):
 
-        if gr >= 0:
-            border_color = "#AEE3B2"
-            growth_color = "#2E7D32"
-            icon = "↑"
-        else:
-            border_color = "#E1B7B3"
-            growth_color = "#C62828"
-            icon = "↓"
+        # warna border mengikuti growth
+        border_color = "#AEE3B2" if gr > 0 else "#E1B7B3"
 
         with cols[idx_start + i]:
             st.markdown(f"""
-                <div style="{card_style}; border-bottom: 4px solid {border_color};">
-                    <p style="color:#666; font-size:11px; margin:0; font-weight:600; text-transform:uppercase;">
+                <div style="{card_style}; border-bottom:4px solid {border_color};">
+                    <p style="color:#6B7280; font-size:12px; margin:0; font-weight:600;">
                         {label}
                     </p>
-                    <div style="font-size:26px; font-weight:800; color:#1E293B; line-height:1.2;">
+                    <div style="font-size:30px; font-weight:800; margin-top:4px;">
                         {fmt.format(val)}
                     </div>
-                    <p style="font-size:12px; margin:2px 0 0 0; font-weight:600; color:{growth_color};">
-                        {icon} {gr:+.2%}
-                    </p>
+                    {get_delta_html(gr)}
                 </div>
             """, unsafe_allow_html=True)
 
