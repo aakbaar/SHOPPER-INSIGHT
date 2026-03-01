@@ -915,8 +915,8 @@ def render_category_promo_share_chart(df):
     import plotly.express as px
 
     st.markdown("------")
-    st.markdown("### 🚀 CATEGORY PROMO DISTRIBUTION")
-    st.caption("Distribusi pembelian karena promo vs non-promo pada setiap kategori.")
+    st.markdown("### CATEGORY PROMO DRIVEN ")
+    st.caption("Distribusi share pembelian karena promo vs non-promo per kategori")
 
     temp = df.copy()
 
@@ -934,12 +934,7 @@ def render_category_promo_share_chart(df):
     ) / 2
 
     # ==============================
-    # SORT BY CATEGORY NAME (Z → A)
-    # ==============================
-    temp = temp.sort_values("CATEGORY", ascending=False)
-
-    # ==============================
-    # Melt
+    # Reshape
     # ==============================
     chart_df = temp.melt(
         id_vars="CATEGORY",
@@ -954,7 +949,7 @@ def render_category_promo_share_chart(df):
     })
 
     # ==============================
-    # Build Vertical 100% Stacked
+    # Vertical 100% Stacked
     # ==============================
     fig = px.bar(
         chart_df,
@@ -962,40 +957,29 @@ def render_category_promo_share_chart(df):
         y="SHARE",
         color="TYPE",
         barmode="stack",
+        text=chart_df["SHARE"].apply(lambda x: f"{x:.0%}"),
         color_discrete_map={
-            "PROMO": "#16A34A",       # clean green
-            "NON PROMO": "#E5E7EB"    # soft grey
+            "PROMO": "#16A34A",       # Green executive
+            "NON PROMO": "#CBD5E1"    # Soft gray
         }
     )
 
-    # Label hanya jika cukup besar (>12%)
-    fig.update_traces(
-        texttemplate="%{y:.0%}",
-        textposition="inside",
-        insidetextfont=dict(size=11),
+    fig.update_layout(
+        yaxis_tickformat=".0%",
+        height=550,
+        legend_title="",
+        xaxis_title="",
+        yaxis_title="Percentage",
+        xaxis_tickangle=-45,
+        bargap=0.15,
+        template="plotly_white"
     )
 
-    fig.update_layout(
-        height=580,
-        template="plotly_white",
-        yaxis=dict(
-            tickformat=".0%",
-            title="Share (%)",
-            gridcolor="#F1F5F9"
-        ),
-        xaxis=dict(
-            title="",
-            tickangle=-45
-        ),
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
-        ),
-        bargap=0.2,
-        margin=dict(t=30, b=100, l=20, r=20)
+    fig.update_traces(
+        textposition="inside",
+        insidetextfont=dict(color="white", size=12),
+        marker_line_width=1,
+        marker_line_color="white"
     )
 
     st.plotly_chart(fig, use_container_width=True)
