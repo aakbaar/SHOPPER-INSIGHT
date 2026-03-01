@@ -1506,103 +1506,91 @@ def main():
                     st.markdown("<hr style='border: 1px dashed #E2E8F0; margin: 30px 0;'>", unsafe_allow_html=True)
 
                     # --- ROW 5: PROMO INFLUENCE ---
-                    # --- ROW 5: PROMO INFLUENCE (STRATEGIC VERSION) ---
-                    st.markdown("<h4 style='text-align: center; color: #475569; font-weight: 600;'>PROMO IMPACT ANALYSIS</h4>", unsafe_allow_html=True)
+                    # --- ROW 5: PROMO INFLUENCE (UPGRADED) ---
+                    st.markdown("<h4 style='text-align: center; color: #475569; font-weight: 600;'>PROMO INFLUENCE ON DESTINATION SWITCH</h4>", unsafe_allow_html=True)
                     st.markdown("<br>", unsafe_allow_html=True)
 
                     if not df_raw.empty:
 
+                        # 🔹 Ambil hanya switchers
                         df_promo = df_raw[df_raw["SWITCH_FLAG"] == "SWITCH"].copy()
+
+                        # 🔹 Pastikan 1 buyer hanya 1 baris
                         df_promo = df_promo.drop_duplicates(subset=["BUYER_ID"])
 
-                        summary = (
-                            df_promo.groupby([cfg["after_col"], "PROMO_FLAG"])["BUYER_ID"]
-                            .nunique()
-                            .reset_index(name="COUNT")
-                        )
-
-                        total = (
+                        # 🔹 Hitung total buyer per brand
+                        brand_total = (
                             df_promo.groupby(cfg["after_col"])["BUYER_ID"]
                             .nunique()
-                            .reset_index(name="TOTAL_SWITCHERS")
+                            .reset_index(name="TOTAL_BUYER")
                         )
 
-                        summary = summary.merge(total, on=cfg["after_col"], how="left")
-                        summary["SHARE"] = summary["COUNT"] / summary["TOTAL_SWITCHERS"]
+                        # 🔹 Hitung promo vs non promo
+                        promo_agg = (
+                            df_promo.groupby([cfg["after_col"], "PROMO_FLAG"])["BUYER_ID"]
+                            .nunique()
+                            .reset_index()
+                        )
 
-                        pivot = summary.pivot(
-                            index=cfg["after_col"],
-                            columns="PROMO_FLAG",
-                            values="SHARE"
-                        ).fillna(0)
+                        promo_agg = promo_agg.merge(brand_total, on=cfg["after_col"], how="left")
+                        promo_agg["PERCENTAGE"] = promo_agg["BUYER_ID"] / promo_agg["TOTAL_BUYER"]
 
-                        pivot["TOTAL_SWITCHERS"] = total.set_index(cfg["after_col"])["TOTAL_SWITCHERS"]
-                        pivot["NET_PROMO_IMPACT"] = pivot.get("PROMO", 0) - pivot.get("NON PROMO", 0)
+                        # 🔹 Urut berdasarkan promo share tertinggi
+                        promo_share = promo_agg[promo_agg["PROMO_FLAG"] == "PROMO"].copy()
+                        promo_share = promo_share.sort_values("PERCENTAGE", ascending=False)
 
-                        # 🔥 CLASSIFICATION
-                        def classify(row):
-                            if row["PROMO"] > 0.7:
-                                return "Highly Promo Driven"
-                            elif row["PROMO"] > 0.5:
-                                return "Promo Sensitive"
-                            elif row["PROMO"] > 0.3:
-                                return "Balanced"
-                            else:
-                                return "Organic Driven"
+                        ordered_brands = promo_share[cfg["after_col"]].tolist()
+                        promo_agg[cfg["after_col"]] = pd.Categorical(
+                            promo_agg[cfg["after_col"]],
+                            categories=ordered_brands,
+                            ordered=True
+                        )
 
-                        pivot["SEGMENT"] = pivot.apply(classify, axis=1)
-
-                        pivot = pivot.reset_index()
-
-                        # 🔥 BUBBLE CHART (Volume vs Promo Share)
-                        fig = px.scatter(
-                            pivot,
-                            x="PROMO",
-                            y="TOTAL_SWITCHERS",
-                            size="TOTAL_SWITCHERS",
-                            color="SEGMENT",
-                            hover_data={
-                                "TOTAL_SWITCHERS": True,
-                                "PROMO": ':.1%',
-                                "NET_PROMO_IMPACT": ':.1%'
-                            },
-                            text=cfg["after_col"],
+                        # 🔹 Plot
+                        fig_promo = px.bar(
+                            promo_agg,
+                            x=cfg["after_col"],
+                            y="PERCENTAGE",
+                            color="PROMO_FLAG",
+                            barmode="stack",
+                            text=promo_agg["PERCENTAGE"].apply(lambda x: f"{x:.0%}"),
                             color_discrete_map={
-                                "Highly Promo Driven": "#16A34A",
-                                "Promo Sensitive": "#22C55E",
-                                "Balanced": "#FACC15",
-                                "Organic Driven": "#94A3B8"
+                                "PROMO": "#16A34A",      # green
+                                "NON PROMO": "#D1D5DB"   # soft grey
                             }
                         )
 
-                        fig.update_layout(
-                            height=500,
-                            xaxis_title="Promo Share",
-                            yaxis_title="Total Switchers",
-                            xaxis=dict(tickformat=".0%"),
+                        fig_promo.update_layout(
+                            height=420,
+                            xaxis_title="",
+                            yaxis_title="Share of Switchers",
+                            yaxis=dict(tickformat=".0%"),
+                            legend=dict(
+                                orientation="h",
+                                yanchor="bottom",
+                                y=1.02,
+                                xanchor="right",
+                                x=1
+                            ),
                             paper_bgcolor='rgba(0,0,0,0)',
-                            plot_bgcolor='rgba(0,0,0,0)'
+                            plot_bgcolor='rgba(0,0,0,0)',
+                            margin=dict(t=20, b=0, l=0, r=0)
                         )
 
-                        fig.update_traces(textposition="top center")
+                        fig_promo.update_traces(
+                            marker=dict(line=dict(color="white", width=1))
+                        )
 
-                        st.plotly_chart(fig, use_container_width=True)
+                        st.plotly_chart(fig_promo, use_container_width=True)
 
-                        # 🔥 Insight Block
-                        st.markdown("---")
+                        # 🔹 Insight otomatis
+                        top_brand = ordered_brands[0]
+                        top_val = promo_share.iloc[0]["PERCENTAGE"]
 
-                        top_volume = pivot.sort_values("TOTAL_SWITCHERS", ascending=False).iloc[0]
-                        top_promo = pivot.sort_values("PROMO", ascending=False).iloc[0]
-
-                        st.info(f"""
-                        📌 Highest Volume Destination: **{top_volume[cfg["after_col"]]}**  
-                        • Total Switchers: {int(top_volume["TOTAL_SWITCHERS"])}  
-                        • Promo Share: {top_volume["PROMO"]:.1%}
-
-                        🎯 Most Promo Driven Brand: **{top_promo[cfg["after_col"]]}**  
-                        • Promo Share: {top_promo["PROMO"]:.1%}  
-                        • Volume: {int(top_promo["TOTAL_SWITCHERS"])}
-                        """)
+                        st.info(
+                            f"Most Promo-Driven Brand: {top_brand} "
+                            f"({top_val:.1%} of switchers influenced by promo)"
+                        )
 
                     else:
                         st.info("No promo data available.")
