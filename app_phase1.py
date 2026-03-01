@@ -766,7 +766,7 @@ def render_switching_cards(total_sw, total_no, top_dest_name, top_dest_pct):
         background-color: #F8F9FA; 
         border-radius: 8px; 
         padding: 15px; 
-        min-height: 100px; 
+        min-height: 60px; 
         border: 1px solid #EEE;
         display: flex;
         flex-direction: column;
