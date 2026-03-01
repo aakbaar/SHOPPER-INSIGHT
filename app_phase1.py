@@ -331,29 +331,35 @@ def render_performance_cards(df, is_category=False):
 
     # Buat Kolom
     cols = st.columns(4 if is_category else 3)
-    
-    # Style Kotak (Uniform height & padding)
-    card_container_style = """
-        background-color: #F8F9FA; 
-        border-radius: 8px; 
-        padding: 8px 12px; 
-        border: 1px solid #EEE;
-    """
+
 
     # 1. Category Penetration
     if is_category:
         with cols[0]:
             st.markdown(f"""
-                <div style="{card_container_style}">
-                    <p style="color:#666; font-size:8px; margin:0; font-weight:500;">Transaction Penetration</p>
-                    <div style="font-size:25px; font-weight:bold; color:#000; line-height:1.1;">{metrics['pen_val']:.2%}</div>
+                <div style="
+                    background-color:#F8F9FA;
+                    border-radius:10px;
+                    padding:10px 14px;
+                    border:1px solid #E5E7EB;
+                ">
+                    <p style="color:#6B7280; font-size:11px; margin:0; font-weight:600;">
+                        Transaction Penetration
+                    </p>
+                    <div style="font-size:22px; font-weight:700; color:#111827; line-height:1.2; margin-top:2px;">
+                        {metrics['pen_val']:.2%}
+                    </div>
                     {get_delta_html(metrics['pen_gr'])}
-                    <p style="color:#888; font-size:11px; margin:0;">Total Buyers: {metrics['buyer_total']:,}</p>
+                    <p style="color:#9CA3AF; font-size:10px; margin:2px 0 0 0;">
+                        Total Buyers: {metrics['buyer_total']:,}
+                    </p>
                 </div>
             """, unsafe_allow_html=True)
 
-    # 2. Metrik Lainnya (Dinamis)
+
+    # 2. Metrik Lainnya
     idx_start = 1 if is_category else 0
+
     m_list = [
         ("Purchase Frequency", metrics['freq_val'], metrics['freq_gr'], "{:.2f}"),
         ("Spend Per Buyer", metrics['spb_val'], metrics['spb_gr'], "Rp {:,.0f}"),
@@ -363,9 +369,18 @@ def render_performance_cards(df, is_category=False):
     for i, (label, val, gr, fmt) in enumerate(m_list):
         with cols[idx_start + i]:
             st.markdown(f"""
-                <div style="{card_container_style}">
-                    <p style="color:#666; font-size:8px; margin:0; font-weight:500;">{label}</p>
-                    <div style="font-size:25px; font-weight:bold; color:#000; line-height:1.1;">{fmt.format(val)}</div>
+                <div style="
+                    background-color:#F8F9FA;
+                    border-radius:10px;
+                    padding:10px 14px;
+                    border:1px solid #E5E7EB;
+                ">
+                    <p style="color:#6B7280; font-size:11px; margin:0; font-weight:600;">
+                        {label}
+                    </p>
+                    <div style="font-size:22px; font-weight:700; color:#111827; line-height:1.2; margin-top:2px;">
+                        {fmt.format(val)}
+                    </div>
                     {get_delta_html(gr)}
                 </div>
             """, unsafe_allow_html=True)
