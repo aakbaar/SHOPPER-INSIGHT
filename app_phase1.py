@@ -295,12 +295,12 @@ def render_performance_cards(df, is_category=False):
     card_style = """
         background-color: #F8F9FA; 
         border-radius: 8px; 
-        padding: 15px; 
-        min-height: 120px; 
+        padding: 12px 14px; 
+        height: 135px; 
         border: 1px solid #EEE;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
     """
 
     # Hitung rata-rata metrik
