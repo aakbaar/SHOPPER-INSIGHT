@@ -915,8 +915,8 @@ def render_category_promo_share_chart(df):
     import plotly.express as px
 
     st.markdown("------")
-    st.markdown("### 🚀 CATEGORY PROMO DEPENDENCY")
-    st.caption("Proporsi pembelian karena promo vs non-promo. Garis 50% menunjukkan kategori yang mulai bergantung pada promo.")
+    st.markdown("### 🚀 CATEGORY PROMO DISTRIBUTION")
+    st.caption("Distribusi pembelian karena promo vs non-promo pada setiap kategori.")
 
     temp = df.copy()
 
@@ -934,9 +934,9 @@ def render_category_promo_share_chart(df):
     ) / 2
 
     # ==============================
-    # SORT by promo dominance
+    # SORT BY CATEGORY NAME (Z → A)
     # ==============================
-    temp = temp.sort_values("PROMO_FINAL", ascending=False)
+    temp = temp.sort_values("CATEGORY", ascending=False)
 
     # ==============================
     # Melt
@@ -954,7 +954,7 @@ def render_category_promo_share_chart(df):
     })
 
     # ==============================
-    # Build chart
+    # Build Vertical 100% Stacked
     # ==============================
     fig = px.bar(
         chart_df,
@@ -963,34 +963,20 @@ def render_category_promo_share_chart(df):
         color="TYPE",
         barmode="stack",
         color_discrete_map={
-            "PROMO": "#047857",      # Deep green
-            "NON PROMO": "#E5E7EB"   # Soft gray
+            "PROMO": "#16A34A",       # clean green
+            "NON PROMO": "#E5E7EB"    # soft grey
         }
     )
 
-    # Label hanya jika >15%
+    # Label hanya jika cukup besar (>12%)
     fig.update_traces(
         texttemplate="%{y:.0%}",
         textposition="inside",
         insidetextfont=dict(size=11),
     )
 
-    # ==============================
-    # Add 50% Reference Line
-    # ==============================
-    fig.add_hline(
-        y=0.5,
-        line_dash="dash",
-        line_color="#9CA3AF",
-        annotation_text="50% Benchmark",
-        annotation_position="top right"
-    )
-
-    # ==============================
-    # Layout tuning
-    # ==============================
     fig.update_layout(
-        height=600,
+        height=580,
         template="plotly_white",
         yaxis=dict(
             tickformat=".0%",
@@ -1004,28 +990,17 @@ def render_category_promo_share_chart(df):
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=1.05,
+            y=1.02,
             xanchor="right",
             x=1
         ),
-        bargap=0.18,
-        margin=dict(t=40, b=100, l=20, r=20)
+        bargap=0.2,
+        margin=dict(t=30, b=100, l=20, r=20)
     )
 
     st.plotly_chart(fig, use_container_width=True)
 
-    # ==============================
-    # AUTO INSIGHT SECTION
-    # ==============================
-    top_cat = temp.iloc[0]
-    low_cat = temp.iloc[-1]
 
-    st.markdown("#### 🔎 Insight Summary")
-
-    st.markdown(f"""
-    - **{top_cat['CATEGORY']}** paling bergantung pada promo dengan share **{top_cat['PROMO_FINAL']:.1%}**.
-    - **{low_cat['CATEGORY']}** paling stabil tanpa promo dengan share promo hanya **{low_cat['PROMO_FINAL']:.1%}**.
-    """)
 
 def main():
     global df_p 
