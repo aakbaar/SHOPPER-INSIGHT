@@ -1411,7 +1411,16 @@ def main():
                                 values=[total_sw, total_no],
                                 names=["SWITCH", "NO SWITCH"],
                                 hole=0.65,
-                                color_discrete_sequence=["#16A34A", "#BBF7D0"]  # Hijau solid + soft
+                                color_discrete_sequence=[
+                                "#0F3D2E",  # rank 1 - deep green
+                                "#145A32",  # rank 2
+                                "#1E8449",  # rank 3
+                                "#27AE60",  # rank 4
+                                "#52BE80",
+                                "#7DCEA0",
+                                "#A9DFBF",
+                                "#D5F5E3"
+                            ]
                             )
 
                             fig_overall.update_traces(
