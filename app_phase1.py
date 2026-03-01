@@ -321,7 +321,7 @@ def render_performance_cards(df, is_category=False):
         icon = "↑" if val > 0 else "↓"
 
         return f"""
-            <div style="
+            <div style='
                 display:inline-block;
                 background:{color};
                 color:{t_color};
@@ -330,7 +330,7 @@ def render_performance_cards(df, is_category=False):
                 font-size:9px;
                 font-weight:600;
                 margin-top:4px;
-            ">
+            '>
                 {icon} {val:+.2%}
             </div>
         """
