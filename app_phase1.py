@@ -349,7 +349,7 @@ def render_performance_cards(df, is_category=False):
             st.markdown(f"""
                 <div style="{card_style}">
                     <div>
-                        <p style="color:#6B7280; font-size:11px; margin:0; font-weight:600;">
+                        <p style="color:#6B7280; font-size:12px; margin:0; font-weight:600;">
                             Transaction Penetration
                         </p>
                         <div style="font-size:22px; font-weight:700; color:#111827; margin-top:4px;">
