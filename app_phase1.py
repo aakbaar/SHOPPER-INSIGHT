@@ -454,7 +454,7 @@ def display_styled_table(df):
     st.dataframe(
         styled_df,
         use_container_width=True, 
-        hide_index=True
+        hide_index=False
     )
         
     st.caption("ℹ️ Keterangan Tabel = **SPT** (Spend Per Trip) | **SPB** (Spend Per Buyer)")
