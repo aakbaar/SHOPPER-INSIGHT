@@ -1474,8 +1474,6 @@ def main():
                                 names=cfg["after_col"],
                                 color_discrete_sequence=[
                                     "#0B3D2E",  # rank 1 (deep green)
-                                    "#145A32",  # rank 2
-                                    "#1E8449",  # rank 3
                                     "#27AE60",  # rank 4
                                     "#52BE80",
                                     "#7DCEA0",
