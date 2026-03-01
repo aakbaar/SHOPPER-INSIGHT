@@ -651,7 +651,7 @@ def render_affinity_tab(df, col_a, col_b, filter_cols, key_prefix, show_qty_impa
     # 8.5 RENDER TOP 10 AFFINITY (BARU DITAMBAHKAN)
     # ========================================================
     if show_top10:
-        
+
         st.markdown("<br>", unsafe_allow_html=True)
         st.write("**TOP 10 AFFINITY PAIRS**")
         st.info("Menampilkan 10 kombinasi pasangan dengan skor Affinity tertinggi")
@@ -684,7 +684,7 @@ def render_affinity_tab(df, col_a, col_b, filter_cols, key_prefix, show_qty_impa
     if show_qty_impact:
         st.markdown("---")
         st.write("### 🛒 QTY IMPACT")
-        st.info("**QTY Impact** -> Rata-rata jumlah unit produk B yang dibeli saat user membeli produk A")
+        st.info("Rata-rata QTY produk B yang dibeli user saat bersamaan membeli produk A")
 
         display_cols = [col_a, col_b] + extra_display_cols + ['qty_impact']
         available_cols = [c for c in display_cols if c in df_filtered.columns]
