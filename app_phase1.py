@@ -959,7 +959,7 @@ def render_category_promo_share_chart(df):
         text=chart_df["SHARE"].apply(lambda x: f"{x:.0%}"),
         color_discrete_map={
             "PROMO": "#1F3A5F",       # Green executive
-            "NON PROMO": "#718FCB"    # Soft gray
+            "NON PROMO": "#94A3B8"    # Soft gray
         }
     )
 
