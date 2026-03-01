@@ -449,11 +449,16 @@ def display_styled_table(df):
         elif any(x in col for x in ["AVG", "FREQUENCY", "QTY"]):
             format_dict[col] = "{:,.2f}"
 
-    # 5. Terapkan styling dengan proteksi KeyError
     styled_df = df.style.format(format_dict, na_rep="-")
 
-    if growth_cols:
-        styled_df = styled_df.map(apply_growth_color, subset=growth_cols)
+    # 🔒 Extra safety: pastikan subset benar-benar ada
+    valid_growth_cols = [c for c in growth_cols if c in df.columns]
+
+    if valid_growth_cols:
+        styled_df = styled_df.map(
+            apply_growth_color,
+            subset=valid_growth_cols
+        )
 
     # Tampilkan di Streamlit
     st.dataframe(
