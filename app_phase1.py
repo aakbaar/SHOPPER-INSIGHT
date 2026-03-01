@@ -1488,9 +1488,9 @@ def main():
                             )
 
                             fig_dest_pie.update_layout(
-                                height=360,
-                                margin=dict(t=20, b=10, l=10, r=10),
-                                paper_bgcolor='rgba(0,0,0,0)'
+                                showlegend=True,
+                                uniformtext_minsize=10,
+                                uniformtext_mode="hide"  # sembunyikan label kecil otomatis
                             )
 
                             st.plotly_chart(fig_dest_pie, use_container_width=True)
@@ -1520,7 +1520,7 @@ def main():
                         fig_promo = px.bar(
                             promo_agg, x=cfg["after_col"], y="PERCENTAGE", color="PROMO_FLAG",
                             color_discrete_map={"PROMO": "#27AE60", "NON PROMO": "#919191"},
-                            barmode="stack",
+                            barmode="stack",    
                             text=promo_agg["PERCENTAGE"].apply(lambda x: f"{x:.1%}") 
                         )
                         fig_promo.update_layout(
