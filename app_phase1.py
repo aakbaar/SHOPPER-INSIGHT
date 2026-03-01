@@ -1365,7 +1365,7 @@ def main():
                     render_switching_cards(total_sw, total_no, top_dest_name, top_dest_pct)
 
                     # --- ROW 3: AGGREGATION TABLE ---
-                    st.markdown("#### 📑 Detailed Switching Data")
+                    st.markdown("#### 📑 ***DETAILED SWITCHING DATA***")
                     group_cols = cfg["id_level"] + ["SECTION"]
                     agg_df = df_raw.groupby(group_cols + ["SWITCH_FLAG"])["BUYER_ID"].nunique().unstack(fill_value=0)
                     
