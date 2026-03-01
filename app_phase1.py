@@ -295,7 +295,7 @@ def render_performance_cards(df, is_category=False):
     card_style = """
         background-color:#F8F9FA;
         border-radius:12px;
-        padding:14px 18px;
+        padding:10px 15px;
         border:1px solid #E5E7EB;
         min-height:80px;
         display:flex;
