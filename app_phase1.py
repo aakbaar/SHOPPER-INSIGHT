@@ -216,7 +216,7 @@ st.markdown("""
 # --- 1. DATA LOADERS ---
 @st.cache_data
 def load_perf_file(level, versi):
-    filename = f"perf_{level}_{versi.lower()}.csv"
+    filename = f"perf_{level}_phase1_{versi.lower()}.csv"
     if os.path.exists(filename):
         mtime = os.path.getmtime(filename)
         return pd.read_csv(filename)
@@ -486,8 +486,7 @@ def reorder_final(df, level):
             "TRANSACTION_PENETRATION_BEFORE",
             "TRANSACTION_PENETRATION_AFTER",
             "TRANSACTION_PENETRATION_GROWTH",
-            
-            # fallback versi lama
+
             "PENETRATION_BEFORE",
             "PENETRATION_AFTER",
             "PENETRATION_GROWTH"
