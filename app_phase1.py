@@ -1531,11 +1531,12 @@ def main():
                     st.markdown("<br>", unsafe_allow_html=True)
                     
                     # 🔥 Ambil hanya SWITCHERS
+                    # 🔥 Ambil hanya SWITCHERS
                     df_switch = df_raw[df_raw["SWITCH_FLAG"] == "SWITCH"].copy()
 
-                    # 🔥 Pastikan benar-benar pindah brand (hindari retained)
+                    # 🔥 Pastikan benar-benar pindah (BEFORE != AFTER)
                     df_switch = df_switch[
-                        df_switch["main_col"] != df_switch[cfg["after_col"]]
+                        df_switch[cfg["main_col"]] != df_switch[cfg["after_col"]]
                     ]
 
                     # 🔥 Ambil top destination dari switchers saja
