@@ -1428,12 +1428,15 @@ def main():
 
                                 annotations=[
                                     dict(
-                                        text=f"<b>{pct_sw:.0%}</b><br>"
-                                            f"{total_sw:,} buyers",
+                                        text=(
+                                            f"<b style='font-size:28px'>{pct_sw:.0%}</b><br>"
+                                            f"<span style='font-size:18px'>{total_sw:,} Switchers</span><br>"
+                                            f"<span style='font-size:14px; color:#6B7280'>of {total_buyers:,} Total Buyers</span>"
+                                        ),
                                         x=0.5,
                                         y=0.5,
-                                        font=dict(size=22, color="#6B7280"),
-                                        showarrow=False
+                                        showarrow=False,
+                                        align="center"
                                     )
                                 ],
 
