@@ -350,7 +350,7 @@ def render_performance_cards(df, is_category=False):
                         {metrics['pen_val']:.2%}
                     </div>
                     {get_delta_html(metrics['pen_gr'])}
-                    <p style="color:#9CA3AF; font-size:7px; margin:2px 0 0 0;">
+                    <p style="color:#9CA3AF; font-size:10px; margin:2px 0 0 0;">
                         Total Buyers: {metrics['buyer_total']:,}
                     </p>
                 </div>
