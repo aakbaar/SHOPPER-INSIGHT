@@ -418,7 +418,7 @@ def display_styled_table(df):
     first_col = df.columns[0]
 
     # Jadikan index untuk freeze
-    df = df.set_index(first_col, drop=False)
+    df = df.set_index(first_col)
 
     df.index.name = first_col
     # 2. Identifikasi kolom Growth secara dinamis dan pastikan ada di DF
