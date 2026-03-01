@@ -1475,7 +1475,6 @@ def main():
                                 color_discrete_sequence=[
                                     "#0B3D2E",  # rank 1 (deep green)
                                     "#27AE60",  # rank 4
-                                    "#52BE80",
                                     "#7DCEA0",
                                     "#A9DFBF",
                                     "#D5F5E3"
@@ -1500,10 +1499,6 @@ def main():
                             top_row = dest_data.iloc[0]
                             top_share = top_row["BUYER_ID"] / total_dest
 
-                            st.info(
-                                f"Top Destination: {top_row[cfg['after_col']]} "
-                                f"({top_share:.1%} share | {top_row['BUYER_ID']:,} buyers)"
-                            )
 
                         else:
                             st.info("No switch data to analyze for this filter.")
