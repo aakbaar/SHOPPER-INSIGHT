@@ -415,8 +415,7 @@ def display_styled_table(df):
     # Bersihkan kolom yang tidak perlu agar tampilan rapi
     cols_to_drop = [c for c in df.columns if "PROMO_PCT" in c]
     df = df.drop(columns=cols_to_drop, errors='ignore')
-    first_col = df.columns[0]
-    df = df.set_index(first_col)
+    
     # 2. Identifikasi kolom Growth secara dinamis dan pastikan ada di DF
     # Kita hanya mengambil kolom yang BENAR-BENAR ada di df.columns
     growth_cols = [c for c in df.columns if "GROWTH" in c]
