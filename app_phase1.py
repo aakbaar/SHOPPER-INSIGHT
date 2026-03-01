@@ -5,7 +5,7 @@ st.markdown("""
 /* Kecilkan lebar layout utama */
 .block-container {
     max-width: 1400px;
-    padding-top: 1rem;
+    padding-top: 0.5rem;
 }
 
 html, body, [class*="css"]  {
@@ -834,8 +834,6 @@ def render_switching_cards(total_sw, total_no, top_dest_name, top_dest_pct):
                 </p>
             </div>
         """, unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
 
 def render_category_promo_driven(df):
     """
