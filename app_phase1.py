@@ -1530,8 +1530,23 @@ def main():
                     st.markdown("<h4 style='text-align: center; color: #475569; font-weight: 600;'>PROMO INFLUENCE ON DESTINATION SWITCH</h4>", unsafe_allow_html=True)
                     st.markdown("<br>", unsafe_allow_html=True)
                     
-                    top_brands = df_raw.groupby(cfg["after_col"])["BUYER_ID"].nunique().nlargest(15).index
-                    df_promo = df_raw[df_raw[cfg["after_col"]].isin(top_brands)]
+                    # 🔥 Ambil hanya SWITCHERS
+                    df_switch = df_raw[df_raw["SWITCH_FLAG"] == "SWITCH"].copy()
+
+                    # 🔥 Pastikan benar-benar pindah brand (hindari retained)
+                    df_switch = df_switch[
+                        df_switch["BRAND_BEFORE"] != df_switch[cfg["after_col"]]
+                    ]
+
+                    # 🔥 Ambil top destination dari switchers saja
+                    top_brands = (
+                        df_switch.groupby(cfg["after_col"])["BUYER_ID"]
+                        .nunique()
+                        .nlargest(15)
+                        .index
+                    )
+
+                    df_promo = df_switch[df_switch[cfg["after_col"]].isin(top_brands)]
                     
                     if not df_promo.empty:
                         promo_agg = df_promo.groupby([cfg["after_col"], "PROMO_FLAG"])["BUYER_ID"].nunique().reset_index()
