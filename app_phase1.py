@@ -316,23 +316,28 @@ def render_performance_cards(df, is_category=False):
         if pd.isna(val) or val == 0:
             return ""
 
-        color = "#E8F5E9" if val > 0 else "#FFEBEE"
-        t_color = "#2E7D32" if val > 0 else "#C62828"
-        icon = "↑" if val > 0 else "↓"
+        if val > 0:
+            bg = "#E8F5E9"
+            color = "#2E7D32"
+            icon = "↑"
+        else:
+            bg = "#FFEBEE"
+            color = "#C62828"
+            icon = "↓"
 
         return f"""
-            <div style='
-                display:inline-block;
-                background:{color};
-                color:{t_color};
-                padding:2px 6px;
-                border-radius:12px;
-                font-size:9px;
-                font-weight:600;
-                margin-top:4px;
-            '>
-                {icon} {val:+.2%}
-            </div>
+        <span style="
+            display:inline-block;
+            background:{bg};
+            color:{color};
+            padding:2px 6px;
+            border-radius:12px;
+            font-size:9px;
+            font-weight:600;
+            margin-top:4px;
+        ">
+            {icon} {val:+.2%}
+        </span>
         """
 
     # =========================
