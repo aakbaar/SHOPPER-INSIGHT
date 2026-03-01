@@ -1473,12 +1473,19 @@ def main():
                                 values="BUYER_ID",
                                 names=cfg["after_col"],
                                 color_discrete_sequence=[
-                                    "#0B3D2E",  # rank 1 (deep green)
-                                    "#27AE60",  # rank 4
-                                    "#7DCEA0",
-                                    "#A9DFBF",
-                                    "#D5F5E3"
-                                ]
+                                "#1F3A5F",  # deep navy
+                                "#2A9D8F",  # teal
+                                "#E9C46A",  # soft gold
+                                "#F4A261",  # warm orange
+                                "#E76F51",  # muted coral
+                                "#6D597A",  # soft purple
+                                "#8AB17D",  # sage green
+                                "#457B9D",  # steel blue
+                                "#B5838D",  # dusty rose
+                                "#84A59D",  # grey teal
+                                "#3D405B",  # dark slate
+                                "#A8DADC"   # light aqua
+                            ]
                             )
 
                             fig_dest_pie.update_traces(
