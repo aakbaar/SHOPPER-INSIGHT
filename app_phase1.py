@@ -352,7 +352,7 @@ def render_performance_cards(df, is_category=False):
                         <p style="color:#6B7280; font-size:12px; margin:0; font-weight:600;">
                             Transaction Penetration
                         </p>
-                        <div style="font-size:22px; font-weight:700; color:#111827; margin-top:4px;">
+                        <div style="font-size:27px; font-weight:700; color:#111827; margin-top:4px;">
                             {metrics['pen_val']:.2%}
                         </div>
                         {get_delta_html(metrics['pen_gr'])}
