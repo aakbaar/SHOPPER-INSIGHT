@@ -292,6 +292,16 @@ def render_performance_cards(df, is_category=False):
     """Versi Uniform & Clean: Ukuran diperbesar, teks div bocor dihapus"""
     if df.empty:
         return
+    card_style = """
+        background-color:#F8F9FA;
+        border-radius:12px;
+        padding:14px 18px;
+        border:1px solid #E5E7EB;
+        min-height:140px;
+        display:flex;
+        flex-direction:column;
+        justify-content:space-between;
+    """
 
     # Hitung rata-rata metrik
     metrics = {
