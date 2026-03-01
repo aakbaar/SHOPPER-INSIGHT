@@ -346,7 +346,17 @@ def render_performance_cards(df, is_category=False):
     # ==============================
     if is_category:
         with cols[0]:
-            border_color = "#3498DB"
+
+            gr = metrics['pen_gr']
+
+            if gr >= 0:
+                border_color = "#AEE3B2"
+                growth_color = "#2E7D32"
+                icon = "↑"
+            else:
+                border_color = "#E1B7B3"
+                growth_color = "#C62828"
+                icon = "↓"
 
             st.markdown(f"""
                 <div style="{card_style}; border-bottom: 4px solid {border_color};">
@@ -356,10 +366,10 @@ def render_performance_cards(df, is_category=False):
                     <div style="font-size:26px; font-weight:800; color:#1E293B; line-height:1.2;">
                         {metrics['pen_val']:.2%}
                     </div>
-                    <p style="color:#888; font-size:11px; margin:0;">
-                        Growth: {metrics['pen_gr']:+.2%}
+                    <p style="font-size:12px; margin:2px 0 0 0; font-weight:600; color:{growth_color};">
+                        {icon} {gr:+.2%}
                     </p>
-                    <p style="color:#888; font-size:11px; margin:0;">
+                    <p style="color:#888; font-size:11px; margin:2px 0 0 0;">
                         Total Buyers: {metrics['buyer_total']:,}
                     </p>
                 </div>
@@ -378,11 +388,14 @@ def render_performance_cards(df, is_category=False):
 
     for i, (label, val, gr, fmt) in enumerate(m_list):
 
-        # Warna bawah berdasarkan growth
         if gr >= 0:
-            border_color = "#AEE3B2"   # hijau soft
+            border_color = "#AEE3B2"
+            growth_color = "#2E7D32"
+            icon = "↑"
         else:
-            border_color = "#E1B7B3"   # merah soft
+            border_color = "#E1B7B3"
+            growth_color = "#C62828"
+            icon = "↓"
 
         with cols[idx_start + i]:
             st.markdown(f"""
@@ -393,8 +406,8 @@ def render_performance_cards(df, is_category=False):
                     <div style="font-size:26px; font-weight:800; color:#1E293B; line-height:1.2;">
                         {fmt.format(val)}
                     </div>
-                    <p style="color:#888; font-size:11px; margin:0;">
-                        Growth: {gr:+.2%}
+                    <p style="font-size:12px; margin:2px 0 0 0; font-weight:600; color:{growth_color};">
+                        {icon} {gr:+.2%}
                     </p>
                 </div>
             """, unsafe_allow_html=True)
