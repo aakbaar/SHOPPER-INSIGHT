@@ -1441,6 +1441,7 @@ def main():
 
                             dest_data = (
                                 df_only_sw
+                                .drop_duplicates(subset=["BUYER_ID"])  # penting!
                                 .groupby(cfg["after_col"])["BUYER_ID"]
                                 .nunique()
                                 .reset_index()
