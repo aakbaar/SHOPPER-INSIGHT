@@ -1417,13 +1417,27 @@ def main():
 
                             fig_overall.update_layout(
                                 height=420,
-                                margin=dict(t=70, b=20, l=20, r=20),
+                                margin=dict(t=80, b=20, l=20, r=20),
+
                                 title=dict(
                                     text="SWITCH VS NO SWITCH",
                                     x=0.5,
                                     xanchor="center",
                                     font=dict(size=20, color="#475569")
                                 ),
+
+                                annotations=[
+                                    dict(
+                                        text=f"<b>{pct_sw:.0%}</b><br>"
+                                            f"{total_sw:,} buyers",
+                                        x=0.5,
+                                        y=0.5,
+                                        font=dict(size=22, color="#6B7280"),
+                                        showarrow=False
+                                    )
+                                ],
+
+                                showlegend=True,
                                 paper_bgcolor='rgba(0,0,0,0)',
                                 plot_bgcolor='rgba(0,0,0,0)'
                             )
