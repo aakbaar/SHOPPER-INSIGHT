@@ -289,12 +289,11 @@ def load_affinity_data():
 import matplotlib.colors as mcolors
 
 def render_performance_cards(df, is_category=False):
+    """Versi Uniform & Clean: Ukuran diperbesar, teks div bocor dihapus"""
     if df.empty:
         return
 
-    # =========================
-    # CALCULATE METRICS
-    # =========================
+    # Hitung rata-rata metrik
     metrics = {
         "freq_val": df["PURCHASE_FREQUENCY_AFTER"].mean() if "PURCHASE_FREQUENCY_AFTER" in df.columns else 0,
         "freq_gr": df["PURCHASE_FREQUENCY_GROWTH"].mean() if "PURCHASE_FREQUENCY_GROWTH" in df.columns else 0,
@@ -303,87 +302,62 @@ def render_performance_cards(df, is_category=False):
         "spt_val": df["SPT_AFTER"].mean() if "SPT_AFTER" in df.columns else 0,
         "spt_gr": df["SPT_GROWTH"].mean() if "SPT_GROWTH" in df.columns else 0,
     }
-
+    
     if is_category:
-        metrics["pen_val"] = df.get("TRANSACTION_PENETRATION_AFTER", pd.Series([0])).mean()
-        metrics["pen_gr"] = df.get("TRANSACTION_PENETRATION_GROWTH", pd.Series([0])).mean()
-        metrics["buyer_total"] = df.get("BUYER_COUNT_AFTER", pd.Series([0])).sum()
 
-    # =========================
-    # DELTA BUBBLE
-    # =========================
+        metrics["pen_val"] = (
+            df["TRANSACTION_PENETRATION_AFTER"].mean()
+            if "TRANSACTION_PENETRATION_AFTER" in df.columns else 0
+        )
+
+        metrics["pen_gr"] = (
+            df["TRANSACTION_PENETRATION_GROWTH"].mean()
+            if "TRANSACTION_PENETRATION_GROWTH" in df.columns else 0
+        )
+
+        metrics["buyer_total"] = (
+            df["BUYER_COUNT_AFTER"].sum()
+            if "BUYER_COUNT_AFTER" in df.columns else 0
+        )
+
+    # Indikator Growth (Bubble)
     def get_delta_html(val):
-        if pd.isna(val) or val == 0:
-            return ""
+        color = "#E8F5E9" if val > 0 else "#FFEBEE"
+        t_color = "#2E7D32" if val > 0 else "#C62828"
+        icon = "↑" if val > 0 else "↓"
+        return f"""<div style="display:inline-block; background-color:{color}; color:{t_color}; 
+                    padding:2px 6px; border-radius:12px; font-size:10px; font-weight:bold; margin-top:4px;">
+                    {icon} {val:+.2%}</div>"""
 
-        if val > 0:
-            bg = "#E8F5E9"
-            color = "#2E7D32"
-            icon = "↑"
-        else:
-            bg = "#FFEBEE"
-            color = "#C62828"
-            icon = "↓"
-
-        return f"""
-        <span style="
-            display:inline-block;
-            background:{bg};
-            color:{color};
-            padding:2px 6px;
-            border-radius:12px;
-            font-size:9px;
-            font-weight:600;
-            margin-top:4px;
-        ">
-            {icon} {val:+.2%}
-        </span>
-        """
-
-    # =========================
-    # UNIFORM CARD STYLE
-    # =========================
-    card_style = """
-        background-color:#F8F9FA;
-        border-radius:10px;
-        padding:12px 16px;
-        border:1px solid #E5E7EB;
-        min-height:120px;
-        display:flex;
-        flex-direction:column;
-        justify-content:space-between;
-    """
-
-    # =========================
-    # CREATE COLUMNS
-    # =========================
+    # Buat Kolom
     cols = st.columns(4 if is_category else 3)
 
-    # =========================
-    # CATEGORY PENETRATION CARD
-    # =========================
+
+    # 1. Category Penetration
     if is_category:
         with cols[0]:
             st.markdown(f"""
-                <div style="{card_style}">
-                    <div>
-                        <p style="color:#6B7280; font-size:11px; margin:0; font-weight:600;">
-                            Transaction Penetration
-                        </p>
-                        <div style="font-size:22px; font-weight:700; color:#111827; margin-top:2px;">
-                            {metrics['pen_val']:.2%}
-                        </div>
-                        {get_delta_html(metrics['pen_gr'])}
+                <div style="
+                    background-color:#F8F9FA;
+                    border-radius:10px;
+                    padding:10px 14px;
+                    border:1px solid #E5E7EB;
+                ">
+                    <p style="color:#6B7280; font-size:11px; margin:0; font-weight:600;">
+                        Transaction Penetration
+                    </p>
+                    <div style="font-size:22px; font-weight:700; color:#111827; line-height:1.2; margin-top:2px;">
+                        {metrics['pen_val']:.2%}
                     </div>
-                    <p style="color:#9CA3AF; font-size:10px; margin:0;">
+                    {get_delta_html(metrics['pen_gr'])}
+                    <p style="color:#9CA3AF; font-size:10px; margin:2px 0 0 0;">
                         Total Buyers: {metrics['buyer_total']:,}
                     </p>
                 </div>
             """, unsafe_allow_html=True)
 
-    # =========================
-    # OTHER METRICS
-    # =========================
+
+    # 2. Metrik Lainnya
     idx_start = 1 if is_category else 0
 
     m_list = [
@@ -395,17 +369,19 @@ def render_performance_cards(df, is_category=False):
     for i, (label, val, gr, fmt) in enumerate(m_list):
         with cols[idx_start + i]:
             st.markdown(f"""
-                <div style="{card_style}">
-                    <div>
-                        <p style="color:#6B7280; font-size:11px; margin:0; font-weight:600;">
-                            {label}
-                        </p>
-                        <div style="font-size:22px; font-weight:700; color:#111827; margin-top:2px;">
-                            {fmt.format(val)}
-                        </div>
-                        {get_delta_html(gr)}
+                <div style="
+                    background-color:#F8F9FA;
+                    border-radius:10px;
+                    padding:10px 14px;
+                    border:1px solid #E5E7EB;
+                ">
+                    <p style="color:#6B7280; font-size:11px; margin:0; font-weight:600;">
+                        {label}
+                    </p>
+                    <div style="font-size:22px; font-weight:700; color:#111827; line-height:1.2; margin-top:2px;">
+                        {fmt.format(val)}
                     </div>
-                    <p style="visibility:hidden; margin:0;">placeholder</p>
+                    {get_delta_html(gr)}
                 </div>
             """, unsafe_allow_html=True)
 
