@@ -1396,11 +1396,6 @@ def main():
                     # =========================================================
                     with col_pie1:
 
-                        st.markdown(
-                            "<h4 style='text-align: center; color: #475569; font-weight: 600;'>SWITCH VS NO SWITCH</h4>",
-                            unsafe_allow_html=True
-                        )
-
                         total = total_sw + total_no
 
                         if total > 0:
@@ -1447,11 +1442,6 @@ def main():
                     # RIGHT — TOP DESTINATION (GREEN TONE + INSIGHT)
                     # =========================================================
                     with col_pie2:
-
-                        st.markdown(
-                            "<h4 style='text-align: center; color: #475569; font-weight: 600;'>TOP DESTINATION SWITCH</h4>",
-                            unsafe_allow_html=True
-                        )
 
                         if not df_only_sw.empty:
 
