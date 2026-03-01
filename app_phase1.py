@@ -1482,14 +1482,16 @@ def main():
                             )
 
                             fig_dest_pie.update_traces(
-                                textinfo='percent+label',
-                                textfont_size=12,
-                                marker=dict(line=dict(color='#FFFFFF', width=2))
+                                textinfo="percent",          # atau "none" kalau mau super clean
+                                textposition="inside",       # paksa di dalam
+                                insidetextorientation="horizontal",
+                                pull=0,                      # pastikan tidak ada slice ditarik
+                                marker=dict(line=dict(color="white", width=2))
                             )
 
                             fig_dest_pie.update_layout(
                                 showlegend=True,
-                                uniformtext_minsize=10,
+                                uniformtext_minsize=11,
                                 uniformtext_mode="hide"  # sembunyikan label kecil otomatis
                             )
 
