@@ -1430,7 +1430,7 @@ def main():
                                     dict(
                                         text=(
                                             f"<b style='font-size:28px'>{pct_sw:.0%}</b><br>"
-                                            f"<span style='font-size:18px'>{total_sw:,} Switchers</span><br>"
+                                            f"<span style='font-size:14px'>{total_sw:,} Switchers</span><br>"
                                             f"<span style='font-size:14px; color:#6B7280'>of {total:,} Total Buyers</span>"
                                         ),
                                         x=0.5,
