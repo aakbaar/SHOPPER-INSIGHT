@@ -1506,116 +1506,103 @@ def main():
                     st.markdown("<hr style='border: 1px dashed #E2E8F0; margin: 30px 0;'>", unsafe_allow_html=True)
 
                     # --- ROW 5: PROMO INFLUENCE ---
-                    # --- ROW 5: PROMO INFLUENCE (ADVANCED INSIGHT VERSION) ---
-                    st.markdown("<h4 style='text-align: center; color: #475569; font-weight: 600;'>PROMO INFLUENCE ON DESTINATION SWITCH</h4>", unsafe_allow_html=True)
+                    # --- ROW 5: PROMO INFLUENCE (STRATEGIC VERSION) ---
+                    st.markdown("<h4 style='text-align: center; color: #475569; font-weight: 600;'>PROMO IMPACT ANALYSIS</h4>", unsafe_allow_html=True)
                     st.markdown("<br>", unsafe_allow_html=True)
 
                     if not df_raw.empty:
 
                         df_promo = df_raw[df_raw["SWITCH_FLAG"] == "SWITCH"].copy()
-
-                        # 🔹 1 buyer = 1 row
                         df_promo = df_promo.drop_duplicates(subset=["BUYER_ID"])
 
-                        # 🔹 Total switchers per brand
-                        brand_total = (
+                        summary = (
+                            df_promo.groupby([cfg["after_col"], "PROMO_FLAG"])["BUYER_ID"]
+                            .nunique()
+                            .reset_index(name="COUNT")
+                        )
+
+                        total = (
                             df_promo.groupby(cfg["after_col"])["BUYER_ID"]
                             .nunique()
                             .reset_index(name="TOTAL_SWITCHERS")
                         )
 
-                        # 🔹 Promo breakdown
-                        promo_agg = (
-                            df_promo.groupby([cfg["after_col"], "PROMO_FLAG"])["BUYER_ID"]
-                            .nunique()
-                            .reset_index(name="BUYER_COUNT")
-                        )
+                        summary = summary.merge(total, on=cfg["after_col"], how="left")
+                        summary["SHARE"] = summary["COUNT"] / summary["TOTAL_SWITCHERS"]
 
-                        promo_agg = promo_agg.merge(brand_total, on=cfg["after_col"], how="left")
-                        promo_agg["PERCENTAGE"] = promo_agg["BUYER_COUNT"] / promo_agg["TOTAL_SWITCHERS"]
-
-                        # 🔹 Pivot untuk hitung net promo impact
-                        promo_pivot = promo_agg.pivot(
+                        pivot = summary.pivot(
                             index=cfg["after_col"],
                             columns="PROMO_FLAG",
-                            values="PERCENTAGE"
+                            values="SHARE"
                         ).fillna(0)
 
-                        promo_pivot["NET_PROMO_IMPACT"] = promo_pivot.get("PROMO", 0) - promo_pivot.get("NON PROMO", 0)
+                        pivot["TOTAL_SWITCHERS"] = total.set_index(cfg["after_col"])["TOTAL_SWITCHERS"]
+                        pivot["NET_PROMO_IMPACT"] = pivot.get("PROMO", 0) - pivot.get("NON PROMO", 0)
 
-                        promo_pivot = promo_pivot.reset_index()
+                        # 🔥 CLASSIFICATION
+                        def classify(row):
+                            if row["PROMO"] > 0.7:
+                                return "Highly Promo Driven"
+                            elif row["PROMO"] > 0.5:
+                                return "Promo Sensitive"
+                            elif row["PROMO"] > 0.3:
+                                return "Balanced"
+                            else:
+                                return "Organic Driven"
 
-                        # 🔹 Merge kembali untuk sorting
-                        promo_agg = promo_agg.merge(
-                            promo_pivot[[cfg["after_col"], "NET_PROMO_IMPACT"]],
-                            on=cfg["after_col"],
-                            how="left"
-                        )
+                        pivot["SEGMENT"] = pivot.apply(classify, axis=1)
 
-                        # 🔹 Urutkan berdasarkan NET_PROMO_IMPACT
-                        ordered_brands = (
-                            promo_pivot.sort_values("NET_PROMO_IMPACT", ascending=False)
-                            [cfg["after_col"]]
-                            .tolist()
-                        )
+                        pivot = pivot.reset_index()
 
-                        promo_agg[cfg["after_col"]] = pd.Categorical(
-                            promo_agg[cfg["after_col"]],
-                            categories=ordered_brands,
-                            ordered=True
-                        )
-
-                        # 🔹 Chart
-                        fig_promo = px.bar(
-                            promo_agg,
-                            x=cfg["after_col"],
-                            y="PERCENTAGE",
-                            color="PROMO_FLAG",
-                            barmode="stack",
-                            text=promo_agg["PERCENTAGE"].apply(lambda x: f"{x:.0%}"),
+                        # 🔥 BUBBLE CHART (Volume vs Promo Share)
+                        fig = px.scatter(
+                            pivot,
+                            x="PROMO",
+                            y="TOTAL_SWITCHERS",
+                            size="TOTAL_SWITCHERS",
+                            color="SEGMENT",
+                            hover_data={
+                                "TOTAL_SWITCHERS": True,
+                                "PROMO": ':.1%',
+                                "NET_PROMO_IMPACT": ':.1%'
+                            },
+                            text=cfg["after_col"],
                             color_discrete_map={
-                                "PROMO": "#16A34A",
-                                "NON PROMO": "#D1D5DB"
+                                "Highly Promo Driven": "#16A34A",
+                                "Promo Sensitive": "#22C55E",
+                                "Balanced": "#FACC15",
+                                "Organic Driven": "#94A3B8"
                             }
                         )
 
-                        fig_promo.update_layout(
-                            height=450,
-                            xaxis_title="Destination Brand",
-                            yaxis_title="Share of Switchers",
-                            yaxis=dict(tickformat=".0%"),
-                            legend=dict(
-                                orientation="h",
-                                yanchor="bottom",
-                                y=1.02,
-                                xanchor="right",
-                                x=1
-                            ),
+                        fig.update_layout(
+                            height=500,
+                            xaxis_title="Promo Share",
+                            yaxis_title="Total Switchers",
+                            xaxis=dict(tickformat=".0%"),
                             paper_bgcolor='rgba(0,0,0,0)',
-                            plot_bgcolor='rgba(0,0,0,0)',
-                            margin=dict(t=20, b=0, l=0, r=0)
+                            plot_bgcolor='rgba(0,0,0,0)'
                         )
 
-                        fig_promo.update_traces(
-                            marker=dict(line=dict(color="white", width=1))
-                        )
+                        fig.update_traces(textposition="top center")
 
-                        st.plotly_chart(fig_promo, use_container_width=True)
+                        st.plotly_chart(fig, use_container_width=True)
 
-                        # 🔥 EXTRA INSIGHT SECTION
+                        # 🔥 Insight Block
                         st.markdown("---")
 
-                        top_brand = ordered_brands[0]
-                        top_row = promo_pivot[promo_pivot[cfg["after_col"]] == top_brand].iloc[0]
+                        top_volume = pivot.sort_values("TOTAL_SWITCHERS", ascending=False).iloc[0]
+                        top_promo = pivot.sort_values("PROMO", ascending=False).iloc[0]
 
-                        st.info(
-                            f"""
-                            📊 Most Promo-Driven Brand: **{top_brand}**  
-                            • Promo Share: {top_row.get("PROMO",0):.1%}  
-                            • Organic Share: {top_row.get("NON PROMO",0):.1%}  
-                            • Net Promo Impact: {top_row["NET_PROMO_IMPACT"]:.1%}
-                            """
-                        )
+                        st.info(f"""
+                        📌 Highest Volume Destination: **{top_volume[cfg["after_col"]]}**  
+                        • Total Switchers: {int(top_volume["TOTAL_SWITCHERS"])}  
+                        • Promo Share: {top_volume["PROMO"]:.1%}
+
+                        🎯 Most Promo Driven Brand: **{top_promo[cfg["after_col"]]}**  
+                        • Promo Share: {top_promo["PROMO"]:.1%}  
+                        • Volume: {int(top_promo["TOTAL_SWITCHERS"])}
+                        """)
 
                     else:
                         st.info("No promo data available.")
