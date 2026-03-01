@@ -337,20 +337,17 @@ def render_performance_cards(df, is_category=False):
     if is_category:
         with cols[0]:
             st.markdown(f"""
-                <div style="
-                    background-color:#F8F9FA;
-                    border-radius:10px;
-                    padding:10px 14px;
-                    border:1px solid #E5E7EB;
-                ">
-                    <p style="color:#6B7280; font-size:11px; margin:0; font-weight:600;">
-                        Transaction Penetration
-                    </p>
-                    <div style="font-size:22px; font-weight:700; color:#111827; line-height:1.2; margin-top:2px;">
-                        {metrics['pen_val']:.2%}
+                <div style="{card_style}">
+                    <div>
+                        <p style="color:#6B7280; font-size:11px; margin:0; font-weight:600;">
+                            Transaction Penetration
+                        </p>
+                        <div style="font-size:22px; font-weight:700; color:#111827; margin-top:4px;">
+                            {metrics['pen_val']:.2%}
+                        </div>
+                        {get_delta_html(metrics['pen_gr'])}
                     </div>
-                    {get_delta_html(metrics['pen_gr'])}
-                    <p style="color:#9CA3AF; font-size:10px; margin:2px 0 0 0;">
+                    <p style="color:#9CA3AF; font-size:10px; margin:0;">
                         Total Buyers: {metrics['buyer_total']:,}
                     </p>
                 </div>
@@ -369,19 +366,17 @@ def render_performance_cards(df, is_category=False):
     for i, (label, val, gr, fmt) in enumerate(m_list):
         with cols[idx_start + i]:
             st.markdown(f"""
-                <div style="
-                    background-color:#F8F9FA;
-                    border-radius:10px;
-                    padding:10px 14px;
-                    border:1px solid #E5E7EB;
-                ">
-                    <p style="color:#6B7280; font-size:11px; margin:0; font-weight:600;">
-                        {label}
-                    </p>
-                    <div style="font-size:22px; font-weight:700; color:#111827; line-height:1.2; margin-top:2px;">
-                        {fmt.format(val)}
+                <div style="{card_style}">
+                    <div>
+                        <p style="color:#6B7280; font-size:11px; margin:0; font-weight:600;">
+                            {label}
+                        </p>
+                        <div style="font-size:22px; font-weight:700; color:#111827; margin-top:4px;">
+                            {fmt.format(val)}
+                        </div>
+                        {get_delta_html(gr)}
                     </div>
-                    {get_delta_html(gr)}
+                    <p style="visibility:hidden; margin:0;">placeholder</p>
                 </div>
             """, unsafe_allow_html=True)
 
