@@ -913,6 +913,75 @@ def render_category_promo_share_chart(df):
         return
 
     import plotly.express as px
+    st.markdown("------")
+    st.markdown("### CATEGORY PROMO DRIVEN ")
+    st.caption("Distribusi share pembelian karena promo vs non-promo per kategori")
+
+    temp = df.copy()
+
+    # ==============================
+    # AVERAGE BEFORE & AFTER
+    # ==============================
+    temp["PROMO_FINAL"] = (
+        temp["PROMO_SHARE_BEFORE"].fillna(0)
+        + temp["PROMO_SHARE_AFTER"].fillna(0)
+    ) / 2
+
+    temp["NON_PROMO_FINAL"] = (
+        temp["NON_PROMO_SHARE_BEFORE"].fillna(0)
+        + temp["NON_PROMO_SHARE_AFTER"].fillna(0)
+    ) / 2
+
+    # ==============================
+    # Reshape
+    # ==============================
+    chart_df = temp.melt(
+        id_vars="CATEGORY",
+        value_vars=["PROMO_FINAL", "NON_PROMO_FINAL"],
+        var_name="TYPE",
+        value_name="SHARE"
+    )
+
+    chart_df["TYPE"] = chart_df["TYPE"].map({
+        "PROMO_FINAL": "PROMO",
+        "NON_PROMO_FINAL": "NON PROMO"
+    })
+
+    # ==============================
+    # Vertical 100% Stacked
+    # ==============================
+    fig = px.bar(
+        chart_df,
+        x="CATEGORY",
+        y="SHARE",
+        color="TYPE",
+        barmode="stack",
+        text=chart_df["SHARE"].apply(lambda x: f"{x:.0%}"),
+        color_discrete_map={
+            "PROMO": "#16A34A",       # Green executive
+            "NON PROMO": "#CBD5E1"    # Soft gray
+        }
+    )
+
+    fig.update_layout(
+        yaxis_tickformat=".0%",
+        height=550,
+        legend_title="",
+        xaxis_title="",
+        yaxis_title="Percentage",
+        xaxis_tickangle=-45,
+        bargap=0.15,
+        template="plotly_white"
+    )
+
+    fig.update_traces(
+        textposition="inside",
+        insidetextfont=dict(color="white", size=12),
+        marker_line_width=1,
+        marker_line_color="white"
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
 
 
 
