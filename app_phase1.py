@@ -1535,7 +1535,7 @@ def main():
 
                     # 🔥 Pastikan benar-benar pindah brand (hindari retained)
                     df_switch = df_switch[
-                        df_switch["BRAND_BEFORE"] != df_switch[cfg["after_col"]]
+                        df_switch["main_col"] != df_switch[cfg["after_col"]]
                     ]
 
                     # 🔥 Ambil top destination dari switchers saja
