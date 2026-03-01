@@ -293,14 +293,14 @@ def render_performance_cards(df, is_category=False):
     if df.empty:
         return
     card_style = """
-        background-color:#F8F9FA;
-        border-radius:10x;
-        padding:10px 14px;
-        border:1px solid #E5E7EB;
-        min-height:80px;
-        display:flex;
-        flex-direction:column;
-        justify-content:space-between;
+        background-color: #F8F9FA; 
+        border-radius: 8px; 
+        padding: 15px; 
+        min-height: 120px; 
+        border: 1px solid #EEE;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     """
 
     # Hitung rata-rata metrik
@@ -336,7 +336,7 @@ def render_performance_cards(df, is_category=False):
         t_color = "#2E7D32" if val > 0 else "#C62828"
         icon = "↑" if val > 0 else "↓"
         return f"""<div style="display:inline-block; background-color:{color}; color:{t_color}; 
-                    padding:2px 10px; border-radius:12px; font-size:12px; font-weight:bold; margin-top:4px;">
+                    padding:2px 6px; border-radius:12px; font-size:10px; font-weight:bold; margin-top:4px;">
                     {icon} {val:+.2%}</div>"""
 
     # Buat Kolom
@@ -386,7 +386,6 @@ def render_performance_cards(df, is_category=False):
                         </div>
                         {get_delta_html(gr)}
                     </div>
-                    <p style="visibility:hidden; margin:0;">placeholder</p>
                 </div>
             """, unsafe_allow_html=True)
 
