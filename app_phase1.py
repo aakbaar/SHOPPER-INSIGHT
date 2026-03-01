@@ -1421,18 +1421,16 @@ def main():
                             )
 
                             fig_overall.update_layout(
-                                height=360,
-                                showlegend=True,
-                                margin=dict(t=20, b=10, l=10, r=10),
+                                height=420,
+                                margin=dict(t=70, b=20, l=20, r=20),
+                                title=dict(
+                                    text="SWITCH VS NO SWITCH",
+                                    x=0.5,
+                                    xanchor="center",
+                                    font=dict(size=20, color="#475569")
+                                ),
                                 paper_bgcolor='rgba(0,0,0,0)',
-                                annotations=[
-                                    dict(
-                                        text=f"<b>{pct_sw:.0%}</b><br>{total:,} buyers",
-                                        x=0.5, y=0.5,
-                                        font_size=22,
-                                        showarrow=False
-                                    )
-                                ]
+                                plot_bgcolor='rgba(0,0,0,0)'
                             )
 
                             st.plotly_chart(fig_overall, use_container_width=True)
@@ -1497,9 +1495,16 @@ def main():
                             )
 
                             fig_dest_pie.update_layout(
-                                showlegend=True,
-                                uniformtext_minsize=11,
-                                uniformtext_mode="hide"  # sembunyikan label kecil otomatis
+                                height=420,
+                                margin=dict(t=70, b=20, l=20, r=20),
+                                title=dict(
+                                    text="TOP DESTINATION SWITCH",
+                                    x=0.5,
+                                    xanchor="center",
+                                    font=dict(size=20, color="#475569")
+                                ),
+                                paper_bgcolor='rgba(0,0,0,0)',
+                                plot_bgcolor='rgba(0,0,0,0)'
                             )
 
                             st.plotly_chart(fig_dest_pie, use_container_width=True)
