@@ -34,8 +34,8 @@ st.markdown("""
         font-family: 'Inter', sans-serif;
     }
     .block-container {
-        max-width: 1000px !important;
-        padding-top: 1rem !important;
+        max-width: 1100px !important;
+        padding-top: 3rem !important;
     }
 
     .login-container {
