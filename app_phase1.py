@@ -1279,7 +1279,7 @@ def main():
         col_title, col_plano, col_sec = st.columns([5, 2.5, 2.5])
         with col_title:
             st.markdown("""
-            <h2 style="margin:0;font-weight:800;">
+            <h2 style="margin:0;font-weight:500;">
             📈 PERFORMANCE OVERVIEW
             </h2>
             """, unsafe_allow_html=True)
