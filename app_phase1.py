@@ -1279,9 +1279,9 @@ def main():
         col_title, col_plano, col_sec = st.columns([5, 2.5, 2.5])
         with col_title:
             st.markdown("""
-            <h1 style="margin:0;font-weight:500;">
+            <h2 style="margin:0;font-weight:800;">
             📈 PERFORMANCE OVERVIEW
-            </h1>
+            </h2>
             """, unsafe_allow_html=True)
         with col_plano: sel_plano = st.selectbox(
                             "VERSI PLANO",
