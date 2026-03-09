@@ -29,13 +29,13 @@ st.markdown("""
     .login-container {
         max-width: 500px;
         margin: auto;
-        padding-top: 0vh;
+        padding-top: 3vh;
         text-align: center;
         font-family: 'Inter', sans-serif;
     }
     .block-container {
         max-width: 1200px !important;
-        padding-top: 3rem !important;
+        padding-top: 1rem !important;
     }
 
     .login-container {
