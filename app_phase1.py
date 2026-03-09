@@ -1280,7 +1280,7 @@ def main():
         with col_title:
             st.markdown("""
             <h2 style="margin:0;font-weight:500;">
-            📈 PERFORMANCE OVERVIEW
+            📈 **PERFORMANCE OVERVIEW**
             </h2>
             """, unsafe_allow_html=True)
         with col_plano: sel_plano = st.selectbox(
