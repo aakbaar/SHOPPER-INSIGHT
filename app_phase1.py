@@ -218,8 +218,19 @@ st.markdown("""
 def load_perf_file(level, versi):
     filename = f"perf_{level}_phase1_{versi.lower()}.csv"
     if os.path.exists(filename):
-        mtime = os.path.getmtime(filename)
-        return pd.read_csv(filename)
+        df = pd.read_csv(filename)
+
+        # 🔧 SAMAKAN NAMA KOLOM PENETRATION
+        rename_map = {
+            "PENETRATION_BEFORE": "TRANSACTION_PENETRATION_BEFORE",
+            "PENETRATION_AFTER": "TRANSACTION_PENETRATION_AFTER",
+            "PENETRATION_GROWTH": "TRANSACTION_PENETRATION_GROWTH"
+        }
+
+        df = df.rename(columns=rename_map)
+
+        return df
+
     return pd.DataFrame()
 
 @st.cache_data
@@ -1049,17 +1060,17 @@ def main():
     if menu == "📈 PERFORMANCE":
         col_title, col_plano, col_sec = st.columns([5, 2.5, 2.5])
         with col_title: st.title("📈 PERFORMANCE OVERVIEW")
-        with col_plano: sel_plano = st.selectbox("VERSI PLANO", ["V1", "V2"], key="plano_perf")
-        # 🔥 Load dataset perf sesuai plano
+        with col_plano: sel_plano = st.selectbox(
+                            "VERSI PLANO",
+                            ["V1", "V2", "NOT_TRIAL"],
+                            key="plano_perf"
+                        )
         df_p = load_perf_file("category", sel_plano)
-
-        # 🔥 Build section list dari data tersebut
+        df_p = df_p[~df_p["SECTION"].isin(["UNKNOWN", "-", "", "NAN", "NONE"])]
         sections_only = sorted(df_p["SECTION"].dropna().unique().tolist())
 
-        # default index section huruf B
         start_idx = next((i for i, s in enumerate(sections_only) if str(s).startswith('B')), 0)
 
-        # 🔥 Universe transaksi global
         global total_struk_global
         if 'df_raw' in globals():
             total_struk_global = df_raw['NO_STRUK'].nunique()
@@ -1471,7 +1482,7 @@ def main():
                                 plot_bgcolor='rgba(0,0,0,0)'
                             )
 
-                            st.plotly_chart(fig_overall, use_container_width=True)
+                            st.plotly_chart(fig_overall, use_container_width=True, key="switch_overall")
 
                             st.caption(
                                 f"Switchers: {total_sw:,} | Retained: {total_no:,}"
@@ -1540,7 +1551,7 @@ def main():
                                 plot_bgcolor='rgba(0,0,0,0)'
                             )
 
-                            st.plotly_chart(fig_dest_pie, use_container_width=True)
+                            st.plotly_chart(fig_dest_pie, use_container_width=True, key="switch_destination")
 
                             # 🔥 Insight tambahan otomatis
                             top_row = dest_data.iloc[0]
@@ -1595,7 +1606,7 @@ def main():
                             paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
                             margin=dict(t=20, b=0, l=0, r=0)
                         )
-                        st.plotly_chart(fig_promo, use_container_width=True)
+                        st.plotly_chart(fig_promo, use_container_width=True, key="switch_promo")
                     else:
                         st.info("No promo data available.")
 
