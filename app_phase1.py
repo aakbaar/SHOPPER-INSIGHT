@@ -36,7 +36,7 @@ st.markdown("""
 
     /* Header Styling */
     .header-main {
-        font-size: 45px;
+        font-size: 48px;
         font-weight: 900;
         color: #1e293b;
         line-height: 0.9;
