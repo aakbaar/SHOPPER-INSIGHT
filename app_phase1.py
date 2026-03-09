@@ -989,12 +989,17 @@ def render_category_promo_share_chart(df):
 
 def main():
     global df_p 
-    df_section_source = load_perf_file("category", "V1")
+    section_set = set()
 
-    if df_section_source.empty or "SECTION" not in df_section_source.columns:
-        sections_only = []
-    else:
-        sections_only = sorted(df_section_source["SECTION"].dropna().unique().tolist())
+    for v in ["V1", "V2", "NOT_TRIAL"]:
+        df_tmp = load_perf_file("category", v)
+        if not df_tmp.empty and "SECTION" in df_tmp.columns:
+            section_set.update(df_tmp["SECTION"].dropna().unique())
+
+    sections_only = sorted(list(section_set))
+
+    # 🔥 Hapus section tidak valid
+    sections_only = [s for s in sections_only if s not in ["UNKNOWN", "-", "NAN", "NONE", ""]]
 
     start_idx = 0
 
