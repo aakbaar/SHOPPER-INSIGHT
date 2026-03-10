@@ -123,9 +123,7 @@ def login_page():
         elapsed = time.time() - st.session_state.login_time
         if elapsed > SESSION_TIMEOUT:
             st.session_state.session_expired = True
-    # =========================
-    # POPUP SESSION EXPIRED
-    # =========================
+
     if st.session_state.session_expired:
 
         st.markdown("""
