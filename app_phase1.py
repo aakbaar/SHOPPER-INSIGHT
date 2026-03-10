@@ -231,7 +231,7 @@ st.markdown("""
 /* Kecilkan lebar layout utama */
 .block-container {
     max-width: 1400px;
-    padding-top: 0.5rem;
+    padding-top: 1rem;
 }
 
 html, body, [class*="css"]  {
