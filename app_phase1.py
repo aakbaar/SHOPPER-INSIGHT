@@ -17,67 +17,68 @@ if "auth" in query and not st.session_state.authenticated:
 # Konfigurasi halaman
 st.set_page_config(page_title="Shopper Category Insight", layout="wide")
 
-# CSS untuk mereplikasi desain dashboard
 st.markdown("""
 <style>
-    /* Background utama */
-    .stApp {
-        background-color: #ffffff;
-    }
-
-    /* Container Login */
-    .login-container {
-        max-width: 500px;
-        margin: auto;
-        padding-top: 3vh;
-        text-align: center;
-        font-family: 'Inter', sans-serif;
-    }
-    .block-container {
-        max-width: 1200px !important;
-        padding-top: 3rem !important;
-    }
-
-    .login-container {
-        max-width: 520px;
-    }
+    /* Background & Container */
+    .stApp { background-color: #ffffff; }
+    .block-container { max-width: 1200px !important; padding-top: 3rem !important; }
 
     /* Header Styling */
     .header-main { font-size: 45px; font-weight: 900; color: #1e293b; line-height: 0.9; letter-spacing: -1px; }
     .header-accent { font-size: 45px; font-weight: 900; color: #991b1b; line-height: 0.9; letter-spacing: -1px; }
     .header-sub { font-size: 14px; font-weight: 700; color: #1e293b; letter-spacing: 2px; margin-top: 15px; text-transform: uppercase; }
 
-    /* Input Fields */
+    /* Input Field Styling */
     div[data-baseweb="input"] {
         background-color: #f1f5f9 !important;
         border-radius: 15px !important;
         border: 1px solid transparent !important;
     }
 
-    /* Menghilangkan tombol silang (X) yang nyempil */
+    /* 1. HILANGKAN TOMBOL SILANG (X) */
     button[aria-label="Clear input"] {
         display: none !important;
     }
 
-    /* 3. TOMBOL LOGIN (TETAP MAROON) */
-    /* Targetkan spesifik ke tombol submit form */
-    div.stButton > button[kind="primaryFormSubmit"] {
+    /* 2. MATA PASSWORD (TETAP TRANSPARAN) */
+    div[data-testid="stTextInput"] button {
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #64748b !important;
+    }
+
+    /* 3. TOMBOL LOGIN (PAKSA MAROON) */
+    /* Kita targetkan tombol di dalam Form secara spesifik */
+    div[data-testid="stFormSubmitButton"] > button {
         background-color: #800000 !important;
         color: white !important;
         border-radius: 12px !important;
         padding: 10px 40px !important;
         font-weight: bold !important;
         border: none !important;
-        box-shadow: 0 4px 15px rgba(128, 0, 0, 0.3) !important;
+        box-shadow: 0 4px 12px rgba(128, 0, 0, 0.3) !important;
         width: auto !important;
-        transition: 0.3s;
+        transition: 0.3s !important;
     }
 
-    div.stButton > button[kind="primaryFormSubmit"]:hover {
+    /* Hover effect agar interaktif */
+    div[data-testid="stFormSubmitButton"] > button:hover {
         background-color: #991b1b !important;
+        border: none !important;
+        color: white !important;
         transform: translateY(-1px);
     }
     
+    /* Menghilangkan border merah bawaan streamlit saat aktif/fokus */
+    div[data-testid="stFormSubmitButton"] > button:focus,
+    div[data-testid="stFormSubmitButton"] > button:active {
+        background-color: #800000 !important;
+        color: white !important;
+        border: none !important;
+        box-shadow: 0 4px 12px rgba(128, 0, 0, 0.3) !important;
+    }
+
     header {visibility: hidden;}
     footer {visibility: hidden;}
 </style>
