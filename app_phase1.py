@@ -21,57 +21,62 @@ st.set_page_config(page_title="Shopper Category Insight", layout="wide")
 st.markdown("""
 <style>
     /* Background utama */
-    .stApp { background-color: #ffffff; }
+    .stApp {
+        background-color: #ffffff;
+    }
+
+    /* Container Login */
+    .login-container {
+        max-width: 500px;
+        margin: auto;
+        padding-top: 3vh;
+        text-align: center;
+        font-family: 'Inter', sans-serif;
+    }
+    .block-container {
+        max-width: 1200px !important;
+        padding-top: 3rem !important;
+    }
+
+    .login-container {
+        max-width: 520px;
+    }
 
     /* Header Styling */
     .header-main { font-size: 45px; font-weight: 900; color: #1e293b; line-height: 0.9; letter-spacing: -1px; }
     .header-accent { font-size: 45px; font-weight: 900; color: #991b1b; line-height: 0.9; letter-spacing: -1px; }
     .header-sub { font-size: 14px; font-weight: 700; color: #1e293b; letter-spacing: 2px; margin-top: 15px; text-transform: uppercase; }
 
-    /* Input Field Styling */
+    /* Input Fields */
     div[data-baseweb="input"] {
         background-color: #f1f5f9 !important;
-        border-radius: 18px !important;
+        border-radius: 15px !important;
         border: 1px solid transparent !important;
     }
 
-    /* 1. MENGHILANGKAN TOMBOL MERAH NYEMPIL (Clear Button) */
+    /* Menghilangkan tombol silang (X) yang nyempil */
     button[aria-label="Clear input"] {
         display: none !important;
     }
 
-    /* 2. MENGEMBALIKAN IKON MATA (Show/Hide Password) */
-    /* Kita buat button di dalam input password tetap transparan agar ikonnya terlihat */
+    /* Tombol LOGIN Spesifik */
+    div.stButton > button {
+        background-color: #800000 !important;
+        color: white !important;
+        border-radius: 12px !important;
+        padding: 10px 30px !important;
+        font-weight: bold !important;
+        border: none !important;
+        box-shadow: 0 4px 12px rgba(128, 0, 0, 0.2) !important;
+    }
+
+    /* Memastikan icon mata terlihat */
     div[data-testid="stTextInput"] button {
         background-color: transparent !important;
-        border: none !important;
         box-shadow: none !important;
-        color: #64748b !important; /* Warna ikon mata abu-abu standar */
+        color: #64748b !important; /* Warna abu-abu untuk ikon mata */
     }
-
-    /* 3. TOMBOL LOGIN (TETAP MAROON) */
-    /* Gunakan selector yang lebih spesifik untuk tombol submit form saja */
-    div.stButton > button[kind="primaryFormSubmit"], 
-    div.stButton > button {
-        background-color: #800000 !important; 
-        color: white !important;
-        border: none !important;
-        padding: 12px 40px !important;
-        border-radius: 12px !important;
-        font-weight: 600 !important;
-        box-shadow: 0 10px 20px rgba(128, 0, 0, 0.2) !important;
-        transition: all 0.3s ease !important;
-        width: auto !important;
-        margin-top: 10px;
-    }
-
-    /* Hover effect tombol login */
-    div.stButton > button:hover {
-        background-color: #991b1b !important;
-        transform: translateY(-2px);
-        box-shadow: 0 12px 25px rgba(128, 0, 0, 0.3) !important;
-    }
-
+    
     header {visibility: hidden;}
     footer {visibility: hidden;}
 </style>
