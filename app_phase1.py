@@ -103,8 +103,8 @@ st.markdown("""
         transform: translateY(-2px);
         box-shadow: 0 15px 30px rgba(128, 0, 0, 0.4) !important;
     }
-    /* Hapus tombol di dalam field password */
-    div[data-baseweb="input"] button {
+    /* Hilangkan tombol clear (X) saja */
+    button[aria-label="Clear input"] {
         display: none !important;
     }
 
