@@ -87,14 +87,6 @@ st.markdown("""
         display: block;
         margin-top: 20px;
     }
-
-    /* Hover effect */
-    div.stButton > button:hover,
-    div.stForm button:hover {
-        background-color: #991b1b !important;
-        transform: translateY(-2px);
-        box-shadow: 0 15px 30px rgba(128, 0, 0, 0.4) !important;
-    }
             
     /* Menghilangkan elemen default Streamlit */
     header {visibility: hidden;}
