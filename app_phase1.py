@@ -44,7 +44,7 @@ st.markdown("""
 
     /* Header Styling */
     .header-main {
-        font-size: 48px;
+        font-size: 45px;
         font-weight: 900;
         color: #1e293b;
         line-height: 0.9;
@@ -52,17 +52,17 @@ st.markdown("""
         margin-bottom: 0px;
     }
     .header-accent {
-        font-size: 48px;
+        font-size: 45px;
         font-weight: 900;
         color: #991b1b; /* Deep Red Dashboard */
         line-height: 0.9;
         letter-spacing: -1px;
     }
     .header-sub {
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 700;
         color: #1e293b;
-        letter-spacing: 3px;
+        letter-spacing: 2px;
         margin-top: 15px;
         text-transform: uppercase;
     }
@@ -85,10 +85,10 @@ st.markdown("""
         background-color: #800000 !important; /* Maroon/Deep Red */
         color: white !important;
         border: none !important;
-        padding: 15px 45px !important;
+        padding: 12px 40px !important;
         border-radius: 15px !important;
-        font-weight: 700 !important;
-        font-size: 16px !important;
+        font-weight: 500 !important;
+        font-size: 12   px !important;
         box-shadow: 0 10px 25px rgba(128, 0, 0, 0.3) !important;
         transition: all 0.3s ease !important;
         width: auto !important;
