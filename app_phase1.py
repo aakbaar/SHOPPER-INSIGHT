@@ -43,70 +43,40 @@ st.markdown("""
     }
 
     /* Header Styling */
-    .header-main {
-        font-size: 45px;
-        font-weight: 900;
-        color: #1e293b;
-        line-height: 0.9;
-        letter-spacing: -1px;
-        margin-bottom: 0px;
-    }
-    .header-accent {
-        font-size: 45px;
-        font-weight: 900;
-        color: #991b1b; /* Deep Red Dashboard */
-        line-height: 0.9;
-        letter-spacing: -1px;
-    }
-    .header-sub {
-        font-size: 14px;
-        font-weight: 700;
-        color: #1e293b;
-        letter-spacing: 2px;
-        margin-top: 15px;
-        text-transform: uppercase;
-    }
+    .header-main { font-size: 45px; font-weight: 900; color: #1e293b; line-height: 0.9; letter-spacing: -1px; }
+    .header-accent { font-size: 45px; font-weight: 900; color: #991b1b; line-height: 0.9; letter-spacing: -1px; }
+    .header-sub { font-size: 14px; font-weight: 700; color: #1e293b; letter-spacing: 2px; margin-top: 15px; text-transform: uppercase; }
 
+    /* Input Fields */
     div[data-baseweb="input"] {
         background-color: #f1f5f9 !important;
-        border-radius: 18px !important;
-        border: 1px solid transparent !important;
-        padding: 2px 12px !important;
-    }
-    div[data-baseweb="input"]:focus-within {
-        border: 1px solid #e2e8f0 !important;
-    }
-
-    /* Tombol Login (Deep Red dengan Glow) */
-    div.stButton > button,
-    div.stForm button {
-        background-color: #800000 !important; /* Maroon/Deep Red */
-        color: white !important;
-        border: none !important;
-        padding: 12px 40px !important;
         border-radius: 15px !important;
-        font-weight: 500 !important;
-        font-size: 12   px !important;
-        box-shadow: 0 10px 25px rgba(128, 0, 0, 0.3) !important;
-        transition: all 0.3s ease !important;
-        width: auto !important;
-        display: block;
-        margin-top: 20px;
+        border: 1px solid transparent !important;
     }
 
-    /* Hover effect */
-    div.stButton > button:hover,
-    div.stForm button:hover {
-        background-color: #991b1b !important;
-        transform: translateY(-2px);
-        box-shadow: 0 15px 30px rgba(128, 0, 0, 0.4) !important;
-    }
-    /* Hilangkan tombol clear (X) saja */
+    /* Menghilangkan tombol silang (X) yang nyempil */
     button[aria-label="Clear input"] {
         display: none !important;
     }
 
-    /* Menghilangkan elemen default Streamlit */
+    /* Tombol LOGIN Spesifik */
+    div.stButton > button {
+        background-color: #800000 !important;
+        color: white !important;
+        border-radius: 12px !important;
+        padding: 10px 30px !important;
+        font-weight: bold !important;
+        border: none !important;
+        box-shadow: 0 4px 12px rgba(128, 0, 0, 0.2) !important;
+    }
+
+    /* Memastikan icon mata terlihat */
+    div[data-testid="stTextInput"] button {
+        background-color: transparent !important;
+        box-shadow: none !important;
+        color: #64748b !important; /* Warna abu-abu untuk ikon mata */
+    }
+    
     header {visibility: hidden;}
     footer {visibility: hidden;}
 </style>
