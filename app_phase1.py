@@ -75,9 +75,6 @@ st.markdown("""
         padding: 8px !important;
         margin-bottom: 10px;
     }
-    div[data-baseweb="input"]:focus-within {
-        border: 1px solid #e2e8f0 !important;
-    }
 
     /* Tombol Login (Deep Red dengan Glow) */
     div.stButton > button,
