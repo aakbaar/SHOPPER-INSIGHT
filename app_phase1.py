@@ -59,22 +59,23 @@ st.markdown("""
         display: none !important;
     }
 
-    /* Tombol LOGIN Spesifik */
-    div.stButton > button {
+    /* 3. TOMBOL LOGIN (TETAP MAROON) */
+    /* Targetkan spesifik ke tombol submit form */
+    div.stButton > button[kind="primaryFormSubmit"] {
         background-color: #800000 !important;
         color: white !important;
         border-radius: 12px !important;
-        padding: 10px 30px !important;
+        padding: 10px 40px !important;
         font-weight: bold !important;
         border: none !important;
-        box-shadow: 0 4px 12px rgba(128, 0, 0, 0.2) !important;
+        box-shadow: 0 4px 15px rgba(128, 0, 0, 0.3) !important;
+        width: auto !important;
+        transition: 0.3s;
     }
 
-    /* Memastikan icon mata terlihat */
-    div[data-testid="stTextInput"] button {
-        background-color: transparent !important;
-        box-shadow: none !important;
-        color: #64748b !important; /* Warna abu-abu untuk ikon mata */
+    div.stButton > button[kind="primaryFormSubmit"]:hover {
+        background-color: #991b1b !important;
+        transform: translateY(-1px);
     }
     
     header {visibility: hidden;}
