@@ -67,10 +67,6 @@ st.markdown("""
         text-transform: uppercase;
     }
 
-    div[data-baseweb="input"]:focus-within {
-        border: 1px solid #e2e8f0 !important;
-    }
-
     /* Tombol Login (Deep Red dengan Glow) */
     div.stButton > button,
     div.stForm button {
@@ -86,6 +82,14 @@ st.markdown("""
         width: auto !important;
         display: block;
         margin-top: 20px;
+    }
+
+    /* Hover effect */
+    div.stButton > button:hover,
+    div.stForm button:hover {
+        background-color: #991b1b !important;
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px rgba(128, 0, 0, 0.4) !important;
     }
             
     /* Menghilangkan elemen default Streamlit */
