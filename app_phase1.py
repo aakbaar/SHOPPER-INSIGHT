@@ -72,8 +72,7 @@ st.markdown("""
         background-color: #f1f5f9 !important;
         border-radius: 18px !important;
         border: 1px solid transparent !important;
-        padding: 8px !important;
-        margin-bottom: 10px;
+        padding: 2px 12px !important;
     }
     div[data-baseweb="input"]:focus-within {
         border: 1px solid #e2e8f0 !important;
