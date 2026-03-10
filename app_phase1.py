@@ -75,6 +75,9 @@ st.markdown("""
         padding: 8px !important;
         margin-bottom: 10px;
     }
+    div[data-baseweb="input"]:focus-within {
+        border: 1px solid #e2e8f0 !important;
+    }
 
     /* Tombol Login (Deep Red dengan Glow) */
     div.stButton > button,
@@ -99,10 +102,6 @@ st.markdown("""
         background-color: #991b1b !important;
         transform: translateY(-2px);
         box-shadow: 0 15px 30px rgba(128, 0, 0, 0.4) !important;
-    }
-    /* Hapus tombol di dalam field password */
-    div[data-baseweb="input"] button {
-        display: none !important;
     }
 
     /* Menghilangkan elemen default Streamlit */
