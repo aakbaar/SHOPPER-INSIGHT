@@ -1681,7 +1681,7 @@ def main():
                                 plot_bgcolor='rgba(0,0,0,0)'
                             )
 
-                            st.plotly_chart(fig_overall, use_container_width=True, key="switch_overall")
+                            st.plotly_chart(fig_overall, use_container_width=True, key="switch_overall_{i}")
 
                             st.caption(
                                 f"Switchers: {total_sw:,} | Retained: {total_no:,}"
@@ -1750,7 +1750,7 @@ def main():
                                 plot_bgcolor='rgba(0,0,0,0)'
                             )
 
-                            st.plotly_chart(fig_dest_pie, use_container_width=True, key="switch_destination")
+                            st.plotly_chart(fig_dest_pie, use_container_width=True, key="switch_destination_{i}")
 
                             # 🔥 Insight tambahan otomatis
                             top_row = dest_data.iloc[0]
@@ -1805,7 +1805,7 @@ def main():
                             paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
                             margin=dict(t=20, b=0, l=0, r=0)
                         )
-                        st.plotly_chart(fig_promo, use_container_width=True, key="switch_promo")
+                        st.plotly_chart(fig_promo, use_container_width=True, key="switch_promo_{i}")
                     else:
                         st.info("No promo data available.")
 
