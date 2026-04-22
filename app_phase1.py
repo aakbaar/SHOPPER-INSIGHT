@@ -439,24 +439,12 @@ def load_loyalty_data():
         import glob
         import pandas as pd
 
-        # Gabungkan CATEGORY_LOYALTY_part
-        cat_loy_files = sorted(glob.glob("CATEGORY_LOYALTY_part*.csv"))
-
-        if not cat_loy_files:
-            st.error("CATEGORY_LOYALTY_part files tidak ditemukan")
-            return {}
-
-        cat_loy_df = pd.concat(
-            [pd.read_csv(f) for f in cat_loy_files],
-            ignore_index=True
-        )
-
         return {
             "br_loy_cat": pd.read_csv("BRAND_LOYALTY_CATEGORY_PHASE1.csv"),
             "br_loy_sub": pd.read_csv("BRAND_LOYALTY_SUBCATEGORY_PHASE1.csv"),
             "br_swi_cat": pd.read_csv("BRAND_SWITCH_CATEGORY_PHASE1.csv"),
             "br_swi_sub": pd.read_csv("BRAND_SWITCH_SUBCATEGORY_PHASE1.csv"),
-            "cat_loy": cat_loy_df,
+            "cat_loy": pd.read_csv("CATEGORY_LOYALTY_PHASE1.csv"),
             "sub_loy": pd.read_csv("SUBCATEGORY_LOYALTY_PHASE1.csv")
         }
 
