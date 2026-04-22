@@ -452,12 +452,12 @@ def load_loyalty_data():
         )
 
         return {
-            "br_loy_cat": pd.read_csv("BRAND_LOYALTY_CATEGORY.csv"),
-            "br_loy_sub": pd.read_csv("BRAND_LOYALTY_SUBCATEGORY.csv"),
-            "br_swi_cat": pd.read_csv("BRAND_SWITCH_CATEGORY.csv"),
-            "br_swi_sub": pd.read_csv("BRAND_SWITCH_SUBCATEGORY.csv"),
+            "br_loy_cat": pd.read_csv("BRAND_LOYALTY_CATEGORY_PHASE1.csv"),
+            "br_loy_sub": pd.read_csv("BRAND_LOYALTY_SUBCATEGORY_PHASE1.csv"),
+            "br_swi_cat": pd.read_csv("BRAND_SWITCH_CATEGORY_PHASE1.csv"),
+            "br_swi_sub": pd.read_csv("BRAND_SWITCH_SUBCATEGORY_PHASE1.csv"),
             "cat_loy": cat_loy_df,
-            "sub_loy": pd.read_csv("SUBCATEGORY_LOYALTY.csv")
+            "sub_loy": pd.read_csv("SUBCATEGORY_LOYALTY_PHASE1.csv")
         }
 
     except Exception as e:
@@ -481,10 +481,10 @@ def load_affinity_data():
         try:
             # AUTO DETECT delimiter (, atau ;)
             df = pd.read_csv(file, sep=None, engine="python")
-            print(f"{file} ✅ OK")
+            print(f"{file} OK")
             data[key] = df
         except Exception as e:
-            print(f"{file} ❌ ERROR: {e}")
+            print(f"{file} ERROR: {e}")
             data[key] = pd.DataFrame()
 
     return data
